@@ -1,4 +1,4 @@
-package id.flowerencee.qrpayapp.ui.theme
+package id.flowerencee.qrpayapp.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

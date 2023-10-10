@@ -1,4 +1,4 @@
-package id.flowerencee.qrpayapp.ui.theme
+package id.flowerencee.qrpayapp.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
