@@ -1,4 +1,4 @@
-package id.flowerencee.qrpayapp.injection
+package id.flowerencee.qrpayapp.support.injection
 
 import android.content.Context
 import id.flowerencee.qrpayapp.data.database.QrPayDatabase
@@ -20,6 +20,9 @@ import id.flowerencee.qrpayapp.domain.usecase.useraccount.GetAllAccountUseCase
 import id.flowerencee.qrpayapp.domain.usecase.useraccount.TopUpAccountBalanceUseCase
 import id.flowerencee.qrpayapp.domain.usecase.useraccount.UpdateAccountUseCase
 import id.flowerencee.qrpayapp.presentation.PaymentViewModel
+import id.flowerencee.qrpayapp.presentation.ui.screens.main.MainViewModel
+import id.flowerencee.qrpayapp.presentation.ui.screens.main.dashboard.DashboardViewModel
+import id.flowerencee.qrpayapp.presentation.ui.screens.transaction.TransactionViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -104,4 +107,7 @@ val transactionUseCaseModule = module {
 
 val viewModelModule = module {
     viewModel { PaymentViewModel(get(), get()) }
+    viewModel { DashboardViewModel(get(), get()) }
+    viewModel { MainViewModel() }
+    viewModel { TransactionViewModel() }
 }

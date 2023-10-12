@@ -54,7 +54,7 @@ class TopUpAccountBalanceUseCase(
                     val transaction = Transaction(
                         transactionName = "Topup Saldo",
                         transactionAmount = amount,
-                        transactionDestination = profile.account_owner_name
+                        transactionDestination = profile.accountOwner
                     )
                     transactionRepository.addTransaction(transaction)
                 }

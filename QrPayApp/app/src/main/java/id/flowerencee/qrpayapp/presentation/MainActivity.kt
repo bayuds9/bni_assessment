@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import id.flowerencee.qrpayapp.presentation.ui.screens.main.MainScreen
 import id.flowerencee.qrpayapp.presentation.ui.theme.QrPayAppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    MainScreen()
                 }
             }
         }
@@ -33,7 +34,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier, viewModel: PaymentViewModel = koinViewModel()) {
+fun Greeting(
+    name: String,
+    modifier: Modifier = Modifier,
+    viewModel: PaymentViewModel = koinViewModel()
+) {
     Text(
         text = "Hello $name!",
         modifier = modifier

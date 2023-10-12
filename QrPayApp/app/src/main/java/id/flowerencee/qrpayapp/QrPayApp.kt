@@ -1,11 +1,11 @@
 package id.flowerencee.qrpayapp
 
 import android.app.Application
-import id.flowerencee.qrpayapp.injection.accountUseCaseModule
-import id.flowerencee.qrpayapp.injection.databaseModule
-import id.flowerencee.qrpayapp.injection.repositoryModule
-import id.flowerencee.qrpayapp.injection.transactionUseCaseModule
-import id.flowerencee.qrpayapp.injection.viewModelModule
+import id.flowerencee.qrpayapp.support.injection.accountUseCaseModule
+import id.flowerencee.qrpayapp.support.injection.databaseModule
+import id.flowerencee.qrpayapp.support.injection.repositoryModule
+import id.flowerencee.qrpayapp.support.injection.transactionUseCaseModule
+import id.flowerencee.qrpayapp.support.injection.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

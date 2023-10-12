@@ -13,7 +13,7 @@ data class UserAccount(
     @ColumnInfo(name = "account_id")
     var id: Int? = null,
     @ColumnInfo("account_name")
-    var account_owner_name: String? = null,
+    var accountOwner: String? = null,
     @ColumnInfo("account_number")
     var accountNumber: String? = null,
     @ColumnInfo("account_balance")
