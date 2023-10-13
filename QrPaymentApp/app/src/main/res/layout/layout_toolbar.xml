@@ -5,23 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/customToolbar"
-        android:layout_width="0dp"
-        android:layout_height="?android:actionBarSize"
-        android:background="?attr/statusBarBackground"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:titleTextColor="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/containerToolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/customToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                app:titleCentered="true"
+                app:subtitleCentered="true"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <View
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:background="?attr/colorPrimarySurface"
-        app:layout_constraintTop_toBottomOf="@id/customToolbar"
+        app:layout_constraintTop_toBottomOf="@id/containerToolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

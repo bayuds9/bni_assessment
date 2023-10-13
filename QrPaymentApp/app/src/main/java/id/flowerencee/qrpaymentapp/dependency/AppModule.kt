@@ -12,7 +12,7 @@ import id.flowerencee.qrpaymentapp.domain.repository.transaction.TransactionRepo
 import id.flowerencee.qrpaymentapp.domain.repository.useraccount.UserAccountRepository
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.AddTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionUseCase
-import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetDetailTransaction
+import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetDetailTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.UpdateTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.AddUserAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAccountUseCase
@@ -20,6 +20,8 @@ import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCa
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.TopUpAccountBalanceUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.UpdateAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardViewModel
+import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerViewModel
+import id.flowerencee.qrpaymentapp.presentation.screens.transaction.inquiry.InquiryViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -103,8 +105,8 @@ val transactionUseCaseModule = module {
         return AddTransactionUseCase(transactionRepository, userAccountRepository)
     }
 
-    fun provideGetDetailTransactionUseCase(transactionRepository: TransactionRepository): GetDetailTransaction {
-        return GetDetailTransaction(transactionRepository)
+    fun provideGetDetailTransactionUseCase(transactionRepository: TransactionRepository): GetDetailTransactionUseCase {
+        return GetDetailTransactionUseCase(transactionRepository)
     }
 
     fun provideAllTransactionUseCase(transactionRepository: TransactionRepository): GetAllTransactionUseCase {
@@ -122,6 +124,8 @@ val transactionUseCaseModule = module {
 
 val viewModelModule = module {
     viewModel { DashboardViewModel(get(), get()) }
+    viewModel { ScannerViewModel() }
+    viewModel { InquiryViewModel(get(), get(), get(), get()) }
     /*viewModel { PaymentViewModel(get(), get()) }
     viewModel { MainViewModel() }
     viewModel { TransactionViewModel() }*/

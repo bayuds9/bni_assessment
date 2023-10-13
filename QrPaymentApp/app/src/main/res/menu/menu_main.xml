@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_dashboard"
+        android:icon="@drawable/round_home"
+        android:title="@string/menu_home" />
+    <item
+        android:id="@+id/menu_account"
+        android:icon="@drawable/round_credit_card"
+        android:title="@string/menu_account" />
+    <item
+        android:id="@+id/menu_scann"
+        android:icon="@drawable/round_qr_code_scanner"
+        android:title="@string/menu_scan" />
+    <item
+        android:id="@+id/menu_cashflow"
+        android:icon="@drawable/round_auto_graph"
+        android:title="@string/menu_cashflow" />
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@drawable/round_info"
+        android:title="@string/menu_about" />
+</menu>

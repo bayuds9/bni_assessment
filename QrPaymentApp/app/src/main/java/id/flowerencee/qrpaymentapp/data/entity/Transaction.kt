@@ -12,6 +12,8 @@ data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "transaction_id")
     var id: Int? = null,
+    @ColumnInfo(name = "transaction_number")
+    var transactionNumber : String? = null,
     @ColumnInfo(name = "transaction_name")
     var transactionName: String? = null,
     @ColumnInfo(name = "transaction_amount")

@@ -9,6 +9,8 @@ import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.AccountView
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,17 +25,23 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private lateinit var binding: FragmentDashboardBinding
-    private val viewModel : DashboardViewModel by viewModel()
+    private var _binding: FragmentDashboardBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: DashboardViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDashboardBinding.bind(
+        _binding = FragmentDashboardBinding.bind(
             inflater.inflate(R.layout.fragment_dashboard, container, false)
         )
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,14 +51,22 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initData() {
-        viewModel.loading.observe(viewLifecycleOwner){
-            when(it){
+        viewModel.loading.observe(viewLifecycleOwner) {
+            when (it) {
                 true -> {}
                 false -> {}
             }
         }
-        viewModel.getUserAccount().observe(viewLifecycleOwner){
-            binding.accList.setData(it.toCollection(ArrayList()), 3)
+        viewModel.getUserAccount().observe(viewLifecycleOwner) {
+            when(it.isEmpty()){
+                true -> {
+                    binding.containerEmpty.toSHow()
+                }
+                false -> {
+                    binding.containerEmpty.toHide()
+                    binding.accList.setData(it.toCollection(ArrayList()), 3)
+                }
+            }
         }
     }
 
@@ -59,27 +75,28 @@ class DashboardFragment : Fragment() {
             override fun onClick(account: UserAccount?) {
                 super.onClick(account)
                 DeLog.d(TAG, "clicked account $account")
-                when(account?.id != null) {
-                    true -> {
-                        DeLog.d(TAG, "go to account")
-                    }
-                    false -> {
-                        DeLog.d(TAG, "create new account")
-                        val userAccount = UserAccount(accountOwner = "sukri", accountNumber = "number", balance = 2129000.0)
-                        viewModel.addAccount(userAccount)
-                    }
-                }
             }
         }
 
         binding.accList.apply {
             setListener(accountListener)
         }
-        binding.tvAccount.setOnClickListener {
-            val userAccount = UserAccount(accountOwner = "sukri", accountNumber = "number", balance = 2129000.0)
+        binding.fabAddAccount.setOnClickListener {
+            val userAccount = UserAccount(
+                accountOwner = "sukri",
+                accountNumber = "6765756577644",
+                balance = 2129000.0
+            )
+            viewModel.addAccount(userAccount)
+        }
+        binding.btnPlus.setOnClickListener {
+            val userAccount = UserAccount(
+                accountOwner = "sukri",
+                accountNumber = "6765756577644",
+                balance = 2129000.0
+            )
             viewModel.addAccount(userAccount)
         }
     }
-
 
 }

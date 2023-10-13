@@ -1,4 +1,35 @@
 <resources>
     <string name="app_name">Qr Payment App</string>
     <string name="add_account">Add Account</string>
+    <string name="flash_control">flash control</string>
+
+
+    <string name="menu_home">Home</string>
+    <string name="menu_account">Account</string>
+    <string name="menu_scan">Scan</string>
+    <string name="menu_cashflow">Cash Flow</string>
+    <string name="menu_about">About</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="receipt">Receipt</string>
+
+    <string name="attention">Attention!</string>
+    <string name="warning">Warning!</string>
+    <string name="cancel_transaction">Cancel Transaction?</string>
+    <string name="camera_require">Camera permission required, please grant permission to continue.</string>
+
+
+    <string name="payment_amount">Payment Amount</string>
+    <string name="select_sof">Select Source of Fund</string>
+
+    <string name="sure">Sure</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="open_setting">Open Setting</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="next">Next</string>
+    <string name="close">Close</string>
+    <string name="action_continue">Continue</string>
+    <string name="my_account">My Account</string>
 </resources>

@@ -49,7 +49,7 @@ class AccountView : ConstraintLayout {
                 fun bind(item: UserAccount) = with(itemView) {
                     val bindData = ItemAccountBinding.bind(this)
                     item.accountNumber?.let {
-                        bindData.tvNumber.text = it
+                        bindData.tvNumber.text = it.chunked(4).joinToString(" ")
                     }
                     item.accountOwner?.let {
                         bindData.tvName.text = it

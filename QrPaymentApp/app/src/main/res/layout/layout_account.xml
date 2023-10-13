@@ -12,6 +12,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_account"
         tools:itemCount="4"
+        android:paddingHorizontal="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

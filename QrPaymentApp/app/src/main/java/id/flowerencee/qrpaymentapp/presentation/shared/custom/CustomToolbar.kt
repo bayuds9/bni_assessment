@@ -38,9 +38,9 @@ class CustomToolbar : ConstraintLayout {
     }
 
     fun setTitle(text: String) {
-        binding.customToolbar.title = text
+        binding.topAppBar.title = text
     }
 
-    fun toolbar() : Toolbar = binding.customToolbar
+    fun toolbar() : Toolbar = binding.topAppBar
 
 }
