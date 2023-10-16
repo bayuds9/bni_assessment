@@ -22,6 +22,7 @@ import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.UpdateAccountUseCa
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.inquiry.InquiryViewModel
+import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -125,7 +126,8 @@ val transactionUseCaseModule = module {
 val viewModelModule = module {
     viewModel { DashboardViewModel(get(), get()) }
     viewModel { ScannerViewModel() }
-    viewModel { InquiryViewModel(get(), get(), get(), get()) }
+    viewModel { InquiryViewModel(get(), get(), get()) }
+    viewModel { ReceiptViewModel(get(), get()) }
     /*viewModel { PaymentViewModel(get(), get()) }
     viewModel { MainViewModel() }
     viewModel { TransactionViewModel() }*/

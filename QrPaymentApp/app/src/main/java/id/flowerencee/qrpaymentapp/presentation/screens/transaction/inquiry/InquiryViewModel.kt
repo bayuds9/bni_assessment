@@ -9,11 +9,11 @@ import androidx.lifecycle.viewModelScope
 import id.flowerencee.qrpaymentapp.data.entity.Transaction
 import id.flowerencee.qrpaymentapp.data.entity.UserAccount
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.AddTransactionUseCase
-import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetDetailTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency
 import id.flowerencee.qrpaymentapp.presentation.shared.`object`.TextLabel
+import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,15 +21,14 @@ import kotlinx.coroutines.withContext
 class InquiryViewModel(
     private val addTransactionUseCase: AddTransactionUseCase,
     private val getAccountUseCase: GetAccountUseCase,
-    private val getAllAccountUseCase: GetAllAccountUseCase,
-    private val getDetailTransactionUseCase: GetDetailTransactionUseCase
+    private val getAllAccountUseCase: GetAllAccountUseCase
 ) : ViewModel() {
-
-    private var _status = MutableLiveData<Boolean>()
-    val status: LiveData<Boolean> get() = _status
 
     private var _inquiryData = MutableLiveData<ArrayList<TextLabel>>()
     val inquiryData: LiveData<ArrayList<TextLabel>> get() = _inquiryData
+
+    private var _transactionId = MutableLiveData<Int>()
+    val transactionId: LiveData<Int> get() = _transactionId
 
     private var qrMetaData = ""
     private var accountData = UserAccount()
@@ -39,7 +38,19 @@ class InquiryViewModel(
     fun setQrData(qrData: String) {
         qrMetaData = qrData
         generateTransactionData()
+        qrMetaData.split(".").last().let {
+            try {
+                val origin = it.replace("[^0-9]".toRegex(), "")
+                amountValue = origin.toDouble()
+            } catch (e: NumberFormatException) {
+                e.printStackTrace()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
+
+    fun getBillerAmount() = amountValue.reformatCurrency()
 
     fun getSof() = liveData {
         getAllAccountUseCase.execute().collect() {
@@ -61,15 +72,13 @@ class InquiryViewModel(
     private fun generateTransactionData() {
         val list = ArrayList<TextLabel>()
         if (qrMetaData.isNotEmpty()) {
-            qrMetaData.split(".").forEachIndexed { index, rawValue ->
+            qrMetaData.split(".").forEachIndexed { index, value ->
                 val label = when (index) {
                     0 -> "Source of Bank"
                     1 -> "Transaction Number"
                     2 -> "Merchant Name"
-                    3 -> "Bill Amount"
                     else -> ""
                 }
-                val value = if (index == 3 && rawValue.isDigitsOnly()) rawValue.toDouble().reformatCurrency("Rp") else rawValue
                 if (label.isNotEmpty()) list.add(TextLabel(index, label, value))
             }
         }
@@ -94,25 +103,14 @@ class InquiryViewModel(
 
     fun executeTransaction() = viewModelScope.launch(Dispatchers.IO) {
         val transaction = Transaction(
+            transactionName = "Transaction Qr",
             transactionAmount = amountValue,
             transactionSource = accountData.id,
             transactionDestination = qrMetaData
         )
         val rowId = addTransactionUseCase.execute(transaction)
         withContext(Dispatchers.Main) {
-            _status.value = rowId > 0
-            generateReceipt(rowId.toInt())
-        }
-    }
-
-    private fun generateReceipt(rowId: Int) = viewModelScope.launch(Dispatchers.IO) {
-        getDetailTransactionUseCase.execute(rowId)?.let {
-            withContext(Dispatchers.Main){
-                qrMetaData = it.transactionDestination ?: ""
-                if (it.transactionAmount != null) amountValue = it.transactionAmount!!
-                if (it.transactionDestination != null && it.transactionDestination?.isDigitsOnly() == true) setSofData(it.transactionDestination!!.toInt())
-
-            }
+            _transactionId.value = rowId.toInt()
         }
     }
 

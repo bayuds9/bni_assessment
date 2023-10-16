@@ -10,8 +10,12 @@
     <string name="menu_cashflow">Cash Flow</string>
     <string name="menu_about">About</string>
     <string name="confirm">Confirm</string>
+    <string name="inquiry">Inquiry</string>
     <string name="confirmation">Confirmation</string>
     <string name="receipt">Receipt</string>
+    <string name="transaction_status">Transaction %s</string>
+    <string name="success">Success</string>
+    <string name="failed">Failed</string>
 
     <string name="attention">Attention!</string>
     <string name="warning">Warning!</string>
@@ -21,9 +25,11 @@
 
     <string name="payment_amount">Payment Amount</string>
     <string name="select_sof">Select Source of Fund</string>
+    <string name="finish_challenge">Finish this challenge to continue</string>
 
     <string name="sure">Sure</string>
     <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="open_setting">Open Setting</string>

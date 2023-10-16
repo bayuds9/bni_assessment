@@ -42,7 +42,7 @@ class InputView : ConstraintLayout {
         init(context, attributeSet)
     }
 
-    enum class TYPE { TEXT, CURRENCY, DROPDOWN }
+    enum class TYPE { TEXT, CURRENCY, DROPDOWN, NUMBER }
     private var inputType = TYPE.TEXT
     private var currentCurrency = ""
     private var activity : Activity? = null
@@ -121,7 +121,10 @@ class InputView : ConstraintLayout {
             }
             TYPE.CURRENCY -> {
                 binding.etInput.inputType = InputType.TYPE_CLASS_NUMBER
+                binding.etInput.setText(data.toString())
+                binding.etInput.isEnabled = false
             }
+            TYPE.NUMBER -> binding.etInput.inputType = InputType.TYPE_CLASS_NUMBER
             TYPE.DROPDOWN -> {
                 when(data){
                     is List<*> -> {
@@ -149,6 +152,7 @@ class InputView : ConstraintLayout {
     fun getTextValue() = when(inputType){
         TYPE.CURRENCY -> binding.etInput.text.toString().trim().replace(".", "")
         TYPE.DROPDOWN -> binding.actInput.text.toString()
+        TYPE.NUMBER -> binding.etInput.text.toString().trim().replace("([^0-9.,])+".toRegex(), "")
         else -> binding.etInput.text.toString().trim()
     }
 

@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ItemTextFieldBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutTextFieldsBinding
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.`object`.TextLabel
 
 class TextFieldView : ConstraintLayout {
@@ -87,6 +90,18 @@ class TextFieldView : ConstraintLayout {
         }
     }
 
+    fun setHeader(status: Boolean, time: String) {
+        if (!status) {
+            binding.tvStatus.apply {
+                MaterialColors.getColor(this, com.google.android.material.R.attr.errorTextColor)
+            }
+        }
+        val transactionStatus = if (status) context.getString(R.string.success) else context.getString(R.string.failed)
+        binding.tvStatus.text = context.getString(R.string.transaction_status, transactionStatus)
+        binding.tvDateTime.text = time
+        binding.tvStatus.toSHow()
+        binding.tvDateTime.toSHow()
+    }
     fun setData(list: ArrayList<TextLabel>){
         textAdapter?.setData(list)
     }

@@ -180,10 +180,13 @@ class ScannerFragment : Fragment() {
     }
 
     private fun routeToInquiry(qrCode: String) {
-        (activity as MainActivity).let {
-            it.activityLauncher.launch(InquiryActivity.myIntent(it, qrCode)){ result ->
-                when(result.resultCode){
-                    Activity.RESULT_OK -> it.backToHome()
+        if (isResumed){
+            (activity as MainActivity).let {
+                it.activityLauncher.launch(InquiryActivity.myIntent(it, qrCode)){ result ->
+                    when(result.resultCode){
+                        Activity.RESULT_OK -> it.backToHome()
+                        else -> initScreen()
+                    }
                 }
             }
         }

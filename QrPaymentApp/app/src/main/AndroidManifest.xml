@@ -29,9 +29,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.screens.transaction.inquiry.InquiryActivity"
-            android:launchMode="singleTask"
-            android:exported="true"/>
-        <activity android:name=".presentation.screens.transaction.confirm.ConfirmActivity"
             android:exported="true"/>
         <activity android:name=".presentation.screens.transaction.receipt.ReceiptActivity"
             android:exported="true"/>

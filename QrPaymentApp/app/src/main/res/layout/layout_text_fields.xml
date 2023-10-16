@@ -15,17 +15,43 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvItems"
-            android:paddingBottom="16dp"
-            android:paddingTop="8dp"
-            android:paddingHorizontal="8dp"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_text_field"
-            android:overScrollMode="never"
+
+        <LinearLayout
+            android:orientation="vertical"
             android:background="?attr/colorSurfaceVariant"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvStatus"
+                tools:text="Transaction Success"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:textColor="?attr/colorSecondary"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvDateTime"
+                tools:text="1239892130"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:textAlignment="center"
+                android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvItems"
+                android:paddingBottom="16dp"
+                android:paddingTop="8dp"
+                android:paddingHorizontal="8dp"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_text_field"
+                android:overScrollMode="never"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
