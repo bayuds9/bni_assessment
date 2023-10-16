@@ -6,16 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import id.flowerencee.qrpaymentapp.data.entity.UserAccount
+import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.AddUserAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DashboardViewModel(
     private val getAllAccountUseCase: GetAllAccountUseCase,
-    private val addUserAccountUseCase: AddUserAccountUseCase
+    private val addUserAccountUseCase: AddUserAccountUseCase,
+    private val getAllTransactionUseCase: GetAllTransactionUseCase
 ) : ViewModel() {
 
     private var _loading = MutableLiveData<Boolean>()
@@ -34,6 +37,12 @@ class DashboardViewModel(
                 DeLog.d("haha", "created account $rowId")
                 _loading.value = false
             }
+        }
+    }
+
+    fun getLastTransaction() = liveData{
+        getAllTransactionUseCase.execute().collect(){
+            emit(it)
         }
     }
 }

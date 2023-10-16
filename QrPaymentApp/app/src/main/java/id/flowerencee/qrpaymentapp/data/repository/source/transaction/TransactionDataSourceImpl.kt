@@ -4,12 +4,13 @@ import id.flowerencee.qrpaymentapp.data.database.dao.TransactionDao
 import id.flowerencee.qrpaymentapp.data.entity.Transaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 
 class TransactionDataSourceImpl(
     private val dao: TransactionDao
 ) : TransactionDataSource {
     override suspend fun getAllTransaction(): Flow<List<Transaction>> {
-        return flow { dao.getAllTransaction() }
+        return flowOf(dao.getAllTransaction())
     }
 
     override suspend fun updateTransaction(transaction: Transaction) {

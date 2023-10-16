@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
+import id.flowerencee.qrpaymentapp.data.entity.Transaction
 import id.flowerencee.qrpaymentapp.data.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.AccountView
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
@@ -68,6 +70,10 @@ class DashboardFragment : Fragment() {
                 }
             }
         }
+        viewModel.getLastTransaction().observe(viewLifecycleOwner){
+            DeLog.d(TAG, "list data $it")
+            binding.listTransaction.setData(ArrayList(it))
+        }
     }
 
     private fun initUi() {
@@ -77,9 +83,19 @@ class DashboardFragment : Fragment() {
                 DeLog.d(TAG, "clicked account $account")
             }
         }
+        val transactionListener = object : TransactionView.TransactionListener {
+            override fun onClickTransaction(transaction: Transaction) {
+                DeLog.d(TAG, "clicked transaction $transaction")
+            }
+
+        }
 
         binding.accList.apply {
             setListener(accountListener)
+        }
+        binding.listTransaction.apply {
+            setLabel(getString(R.string.last_transaction))
+            setListener(transactionListener)
         }
         binding.fabAddAccount.setOnClickListener {
             val userAccount = UserAccount(

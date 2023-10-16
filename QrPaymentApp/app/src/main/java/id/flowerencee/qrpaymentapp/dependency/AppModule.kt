@@ -124,7 +124,7 @@ val transactionUseCaseModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { DashboardViewModel(get(), get()) }
+    viewModel { DashboardViewModel(get(), get(), get()) }
     viewModel { ScannerViewModel() }
     viewModel { InquiryViewModel(get(), get(), get()) }
     viewModel { ReceiptViewModel(get(), get()) }
