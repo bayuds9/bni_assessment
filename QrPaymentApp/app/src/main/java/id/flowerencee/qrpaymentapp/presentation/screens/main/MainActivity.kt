@@ -1,13 +1,15 @@
 package id.flowerencee.qrpaymentapp.presentation.screens.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ActivityMainBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerFragment
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.showPopup
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.animatedEnterTransaction
+import id.flowerencee.qrpaymentapp.presentation.shared.`object`.DialogData
 import id.flowerencee.qrpaymentapp.presentation.shared.support.BaseActivity
 
 class MainActivity : BaseActivity() {
@@ -35,11 +37,11 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun openDashboard() : DashboardFragment {
+    private fun openDashboard(): DashboardFragment {
         return DashboardFragment.newInstance()
     }
 
-    private fun openScanner() : ScannerFragment {
+    private fun openScanner(): ScannerFragment {
         return ScannerFragment.newInstance()
     }
 
@@ -53,5 +55,22 @@ class MainActivity : BaseActivity() {
 
     fun backToHome() {
         setCurrentFragment(openDashboard())
+    }
+
+    override fun onBackPressed() {
+        val dialogData = DialogData(
+            getString(R.string.exit_title),
+            getString(R.string.exit_desc),
+            getString(R.string.cancel),
+            getString(R.string.yes),
+            icon = R.drawable.round_exit_to_app
+        )
+        val listener = object : PopUpInterface {
+            override fun onNegative() {
+                super.onNegative()
+                finishAndRemoveTask()
+            }
+        }
+        showPopup(dialogData, listener)
     }
 }

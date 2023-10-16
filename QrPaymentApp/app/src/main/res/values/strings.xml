@@ -22,6 +22,8 @@
     <string name="cancel_transaction">Cancel Transaction?</string>
     <string name="camera_require">Camera permission required, please grant permission to continue.</string>
 
+    <string name="exit_title">Exit?</string>
+    <string name="exit_desc">Are you sure to exit app?</string>
 
     <string name="payment_amount">Payment Amount</string>
     <string name="select_sof">Select Source of Fund</string>
