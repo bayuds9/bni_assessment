@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import id.flowerencee.qrpaymentapp.data.entity.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
@@ -19,5 +20,11 @@ interface TransactionDao {
     suspend fun getTransactionDetail(id: Int): Transaction?
 
     @Query("SELECT * FROM `transaction`")
-    suspend fun getAllTransaction(): List<Transaction>
+    fun getAllTransaction(): Flow<List<Transaction>>
+
+    @Query("SELECT * FROM `transaction` ORDER BY transaction_time DESC LIMIT (:limit)")
+    fun getLimitedTransactionDescending(limit: Int): Flow<List<Transaction>>
+
+    @Query("SELECT * FROM `transaction` WHERE transaction_source IN (:id)")
+    fun getTransactionFromAccountId(id: Int): Flow<List<Transaction>>
 }

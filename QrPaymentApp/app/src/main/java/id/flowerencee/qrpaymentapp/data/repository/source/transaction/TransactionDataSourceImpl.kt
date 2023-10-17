@@ -10,7 +10,15 @@ class TransactionDataSourceImpl(
     private val dao: TransactionDao
 ) : TransactionDataSource {
     override suspend fun getAllTransaction(): Flow<List<Transaction>> {
-        return flowOf(dao.getAllTransaction())
+        return dao.getAllTransaction()
+    }
+
+    override suspend fun getLimitedTransactionDescending(limit: Int): Flow<List<Transaction>> {
+        return dao.getLimitedTransactionDescending(limit)
+    }
+
+    override suspend fun getAllTransactionFromAccountId(id: Int): Flow<List<Transaction>> {
+        return dao.getTransactionFromAccountId(id)
     }
 
     override suspend fun updateTransaction(transaction: Transaction) {

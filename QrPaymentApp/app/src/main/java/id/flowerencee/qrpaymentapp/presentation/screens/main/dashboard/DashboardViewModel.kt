@@ -6,25 +6,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import id.flowerencee.qrpaymentapp.data.entity.UserAccount
-import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionUseCase
+import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetLimitedTransactionDescendingUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.AddUserAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DashboardViewModel(
     private val getAllAccountUseCase: GetAllAccountUseCase,
     private val addUserAccountUseCase: AddUserAccountUseCase,
-    private val getAllTransactionUseCase: GetAllTransactionUseCase
+    private val getLimitedTransactionDescendingUseCase: GetLimitedTransactionDescendingUseCase
 ) : ViewModel() {
 
     private var _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
     fun getUserAccount() = liveData {
-        getAllAccountUseCase.execute().collect(){
+        getAllAccountUseCase.execute().collect() {
             emit(it)
         }
     }
@@ -33,15 +32,15 @@ class DashboardViewModel(
         _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             val rowId = addUserAccountUseCase.execute(userAccount)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 DeLog.d("haha", "created account $rowId")
                 _loading.value = false
             }
         }
     }
 
-    fun getLastTransaction() = liveData{
-        getAllTransactionUseCase.execute().collect(){
+    fun getLastTransaction(limit: Int) = liveData {
+        getLimitedTransactionDescendingUseCase.execute(limit).collect() {
             emit(it)
         }
     }

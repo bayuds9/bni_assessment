@@ -42,4 +42,6 @@
     <string name="my_account">My Account</string>
     <string name="transaction_history">Transaction History</string>
     <string name="last_transaction">Last Transaction</string>
+    <string name="see_all_transaction">See All Transaction</string>
+    <string name="no_record_to_show">No Record To Show</string>
 </resources>

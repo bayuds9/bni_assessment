@@ -12,6 +12,14 @@ class TransactionRepositoryImpl(
         return source.getAllTransaction()
     }
 
+    override suspend fun getLimitedTransactionDescending(limit: Int): Flow<List<Transaction>> {
+        return source.getLimitedTransactionDescending(limit)
+    }
+
+    override suspend fun getAllTransactionFromAccountId(id: Int): Flow<List<Transaction>> {
+        return source.getAllTransactionFromAccountId(id)
+    }
+
     override suspend fun updateTransaction(transaction: Transaction) {
         source.updateTransaction(transaction)
     }

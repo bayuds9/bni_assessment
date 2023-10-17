@@ -11,8 +11,10 @@ import id.flowerencee.qrpaymentapp.data.repository.source.useraccount.UserAccoun
 import id.flowerencee.qrpaymentapp.domain.repository.transaction.TransactionRepository
 import id.flowerencee.qrpaymentapp.domain.repository.useraccount.UserAccountRepository
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.AddTransactionUseCase
+import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionFromAccountIdUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetDetailTransactionUseCase
+import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetLimitedTransactionDescendingUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.UpdateTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.AddUserAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAccountUseCase
@@ -114,12 +116,22 @@ val transactionUseCaseModule = module {
         return GetAllTransactionUseCase(transactionRepository)
     }
 
+    fun provideAllTransactionFromAccountId(transactionRepository: TransactionRepository): GetAllTransactionFromAccountIdUseCase {
+        return GetAllTransactionFromAccountIdUseCase(transactionRepository)
+    }
+
+    fun provideLimitedTransactionDescending(transactionRepository: TransactionRepository): GetLimitedTransactionDescendingUseCase {
+        return GetLimitedTransactionDescendingUseCase(transactionRepository)
+    }
+
     fun provideUpdateTransactionUseCase(transactionRepository: TransactionRepository): UpdateTransactionUseCase {
         return UpdateTransactionUseCase(transactionRepository)
     }
     single { provideAddTransactionUseCase(get(), get()) }
     single { provideGetDetailTransactionUseCase(get()) }
     single { provideAllTransactionUseCase(get()) }
+    single { provideAllTransactionFromAccountId(get()) }
+    single { provideLimitedTransactionDescending(get()) }
     single { provideUpdateTransactionUseCase(get()) }
 }
 

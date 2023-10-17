@@ -9,6 +9,8 @@ import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.entity.Transaction
 import id.flowerencee.qrpaymentapp.data.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
+import id.flowerencee.qrpaymentapp.presentation.screens.main.MainActivity
+import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptActivity
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.AccountView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
@@ -70,9 +72,12 @@ class DashboardFragment : Fragment() {
                 }
             }
         }
-        viewModel.getLastTransaction().observe(viewLifecycleOwner){
-            DeLog.d(TAG, "list data $it")
+        viewModel.getLastTransaction(10).observe(viewLifecycleOwner){
             binding.listTransaction.setData(ArrayList(it))
+            when(it.isEmpty()){
+                true -> binding.containerEmptyHistory.toSHow()
+                false -> binding.containerEmptyHistory.toHide()
+            }
         }
     }
 
@@ -85,25 +90,20 @@ class DashboardFragment : Fragment() {
         }
         val transactionListener = object : TransactionView.TransactionListener {
             override fun onClickTransaction(transaction: Transaction) {
-                DeLog.d(TAG, "clicked transaction $transaction")
+                transaction.id?.let {
+                    with((activity as MainActivity)){
+                        activityLauncher.launch(ReceiptActivity.myIntent(this, it))
+                    }
+                }
             }
 
         }
-
         binding.accList.apply {
             setListener(accountListener)
         }
         binding.listTransaction.apply {
             setLabel(getString(R.string.last_transaction))
             setListener(transactionListener)
-        }
-        binding.fabAddAccount.setOnClickListener {
-            val userAccount = UserAccount(
-                accountOwner = "sukri",
-                accountNumber = "6765756577644",
-                balance = 2129000.0
-            )
-            viewModel.addAccount(userAccount)
         }
         binding.btnPlus.setOnClickListener {
             val userAccount = UserAccount(
