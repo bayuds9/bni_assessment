@@ -10,9 +10,9 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.appendPathSegments
 
-class ServiceImplementation(
+class KtorServiceImplementation(
     private val client: HttpClient
-) : Service {
+) : KtorService {
     override suspend fun callGetHttp(httpRequestBuilder: HttpRequestBuilder): HttpResponse? {
         return try {
             client.get {

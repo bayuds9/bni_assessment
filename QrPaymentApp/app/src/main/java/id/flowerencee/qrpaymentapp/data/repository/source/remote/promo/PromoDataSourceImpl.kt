@@ -8,12 +8,9 @@ import id.flowerencee.qrpaymentapp.data.model.response.failed.StatusResponse
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponse
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponseItem
 import id.flowerencee.qrpaymentapp.data.networking.MappingFailedResponse
-import id.flowerencee.qrpaymentapp.data.networking.Service
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
+import id.flowerencee.qrpaymentapp.data.networking.KtorService
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.header
-import io.ktor.client.request.headers
 import io.ktor.http.isSuccess
 import io.ktor.http.path
 import io.ktor.serialization.JsonConvertException
@@ -23,7 +20,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 
 class PromoDataSourceImpl(
-    private val service: Service
+    private val ktorService: KtorService
 ) : PromoDataSource {
     private var _status = MutableLiveData<StatusResponse>()
     val status: LiveData<StatusResponse> get() = _status
@@ -33,7 +30,7 @@ class PromoDataSourceImpl(
             headers.append(Constant.HEADER.AUTHORIZATION, BuildConfig.BEARER_TOKEN)
             build()
         }
-        val raw = service.callGetHttp(request)
+        val raw = ktorService.callGetHttp(request)
         var response: List<PromoListResponseItem>? = null
         when (raw != null) {
             true -> {

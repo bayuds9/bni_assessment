@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponseItem
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.MainActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptActivity
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.PromoView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
@@ -56,6 +58,7 @@ class DashboardFragment : Fragment() {
     private fun initData() {
         viewModel.getAllPromo().observe(viewLifecycleOwner){
             DeLog.d(TAG, "response $it")
+            binding.rvPromo.setData(ArrayList(it))
         }
         viewModel.getStatus().observe(viewLifecycleOwner){
             DeLog.d(TAG, "status responsr $it")
@@ -70,6 +73,14 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initUi() {
+        val promoListener = object : PromoView.PromoListener {
+            override fun onClickPromo(item: PromoListResponseItem) {
+                DeLog.d(TAG, "promo clicked $item")
+            }
+        }
+        binding.rvPromo.apply {
+            setListener(promoListener)
+        }
         val transactionListener = object : TransactionView.TransactionListener {
             override fun onClickTransaction(transaction: Transaction) {
                 transaction.id?.let {

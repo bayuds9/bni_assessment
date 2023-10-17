@@ -4,7 +4,7 @@ import android.content.Context
 import id.flowerencee.qrpaymentapp.data.database.QrPayDatabase
 import id.flowerencee.qrpaymentapp.data.database.dao.TransactionDao
 import id.flowerencee.qrpaymentapp.data.database.dao.UserAccountDao
-import id.flowerencee.qrpaymentapp.data.networking.Service
+import id.flowerencee.qrpaymentapp.data.networking.KtorService
 import id.flowerencee.qrpaymentapp.data.repository.implementation.promo.PromoRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.transaction.TransactionRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.useraccount.UserAccountRepositoryImpl
@@ -38,8 +38,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val apiModule = module {
-    fun provideApiService(context: Context): Service {
-        return Service.create(context)
+    fun provideApiService(context: Context): KtorService {
+        return KtorService.create(context)
     }
 
     single { provideApiService(androidApplication()) }
@@ -72,8 +72,8 @@ val dataSourceModule = module {
         return TransactionDataSourceImpl(dao)
     }
 
-    fun providePromoDataSource(service: Service): PromoDataSourceImpl {
-        return PromoDataSourceImpl(service)
+    fun providePromoDataSource(ktorService: KtorService): PromoDataSourceImpl {
+        return PromoDataSourceImpl(ktorService)
     }
 
     single { provideUserAccountDataSource(get()) }

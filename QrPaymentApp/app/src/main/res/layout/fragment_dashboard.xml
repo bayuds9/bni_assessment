@@ -16,10 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <id.flowerencee.qrpaymentapp.presentation.shared.custom.PromoView
                 android:id="@+id/rvPromo"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="180dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>

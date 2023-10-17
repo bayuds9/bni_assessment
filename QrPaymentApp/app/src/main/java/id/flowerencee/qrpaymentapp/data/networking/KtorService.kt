@@ -4,7 +4,6 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import id.flowerencee.qrpaymentapp.BuildConfig
-import id.flowerencee.qrpaymentapp.data.model.Constant
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -15,17 +14,16 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.gson.gson
 import java.util.concurrent.TimeUnit
 
-interface Service {
+interface KtorService {
     suspend fun callGetHttp(httpRequestBuilder: HttpRequestBuilder): HttpResponse?
 
     companion object {
-        fun create(context: Context): Service {
-            return ServiceImplementation(
+        fun create(context: Context): KtorService {
+            return KtorServiceImplementation(
                 client = HttpClient(OkHttp) {
                     engine {
                         if (BuildConfig.DEBUG) {
