@@ -1,4 +1,4 @@
-package id.flowerencee.qrpaymentapp.data.entity
+package id.flowerencee.qrpaymentapp.data.model.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

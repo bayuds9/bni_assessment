@@ -4,12 +4,17 @@ import android.content.Context
 import id.flowerencee.qrpaymentapp.data.database.QrPayDatabase
 import id.flowerencee.qrpaymentapp.data.database.dao.TransactionDao
 import id.flowerencee.qrpaymentapp.data.database.dao.UserAccountDao
+import id.flowerencee.qrpaymentapp.data.networking.Service
+import id.flowerencee.qrpaymentapp.data.repository.implementation.promo.PromoRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.transaction.TransactionRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.useraccount.UserAccountRepositoryImpl
-import id.flowerencee.qrpaymentapp.data.repository.source.transaction.TransactionDataSourceImpl
-import id.flowerencee.qrpaymentapp.data.repository.source.useraccount.UserAccountDataSourceImpl
+import id.flowerencee.qrpaymentapp.data.repository.source.local.transaction.TransactionDataSourceImpl
+import id.flowerencee.qrpaymentapp.data.repository.source.local.useraccount.UserAccountDataSourceImpl
+import id.flowerencee.qrpaymentapp.data.repository.source.remote.promo.PromoDataSourceImpl
+import id.flowerencee.qrpaymentapp.domain.repository.promo.PromoRepository
 import id.flowerencee.qrpaymentapp.domain.repository.transaction.TransactionRepository
 import id.flowerencee.qrpaymentapp.domain.repository.useraccount.UserAccountRepository
+import id.flowerencee.qrpaymentapp.domain.usecase.promo.GetAllPromoUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.AddTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionFromAccountIdUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionUseCase
@@ -27,9 +32,18 @@ import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.Dashboard
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.inquiry.InquiryViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+
+val apiModule = module {
+    fun provideApiService(context: Context): Service {
+        return Service.create(context)
+    }
+
+    single { provideApiService(androidApplication()) }
+}
 
 val databaseModule = module {
     fun provideDatabase(context: Context): QrPayDatabase {
@@ -49,7 +63,7 @@ val databaseModule = module {
     single { provideUserAccountDao(get()) }
 }
 
-val repositoryModule = module {
+val dataSourceModule = module {
     fun provideUserAccountDataSource(dao: UserAccountDao): UserAccountDataSourceImpl {
         return UserAccountDataSourceImpl(dao)
     }
@@ -58,6 +72,17 @@ val repositoryModule = module {
         return TransactionDataSourceImpl(dao)
     }
 
+    fun providePromoDataSource(service: Service): PromoDataSourceImpl {
+        return PromoDataSourceImpl(service)
+    }
+
+    single { provideUserAccountDataSource(get()) }
+    single { provideTransactionDataSource(get()) }
+    single { providePromoDataSource(get()) }
+
+}
+
+val repositoryModule = module {
     fun provideUserAccountRepositoryImpl(source: UserAccountDataSourceImpl): UserAccountRepository {
         return UserAccountRepositoryImpl(source)
     }
@@ -65,10 +90,14 @@ val repositoryModule = module {
     fun provideTransactionRepositoryImpl(source: TransactionDataSourceImpl): TransactionRepository {
         return TransactionRepositoryImpl(source)
     }
-    single { provideUserAccountDataSource(get()) }
-    single { provideTransactionDataSource(get()) }
+
+    fun providePromoRepositoryImpl(source: PromoDataSourceImpl): PromoRepository {
+        return PromoRepositoryImpl(source)
+    }
+
     single { provideUserAccountRepositoryImpl(get()) }
     single { provideTransactionRepositoryImpl(get()) }
+    single { providePromoRepositoryImpl(get()) }
 }
 
 val accountUseCaseModule = module {
@@ -137,8 +166,16 @@ val transactionUseCaseModule = module {
     single { provideUpdateTransactionUseCase(get()) }
 }
 
+val promoUseCaseModule = module {
+    fun provideGetAllPromoUseCase(promoRepository: PromoRepository): GetAllPromoUseCase {
+        return GetAllPromoUseCase(promoRepository)
+    }
+
+    single { provideGetAllPromoUseCase(get()) }
+}
+
 val viewModelModule = module {
-    viewModel { DashboardViewModel(get(), get(), get()) }
+    viewModel { DashboardViewModel(get(), get()) }
     viewModel { AccountViewModel(get(), get()) }
     viewModel { ScannerViewModel() }
     viewModel { InquiryViewModel(get(), get(), get()) }

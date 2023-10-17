@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
-import id.flowerencee.qrpaymentapp.data.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.MainActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryActivity
@@ -14,6 +14,7 @@ import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.Rece
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
+import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : Fragment() {
@@ -53,11 +54,11 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initData() {
-        viewModel.loading.observe(viewLifecycleOwner) {
-            when (it) {
-                true -> {}
-                false -> {}
-            }
+        viewModel.getAllPromo().observe(viewLifecycleOwner){
+            DeLog.d(TAG, "response $it")
+        }
+        viewModel.getStatus().observe(viewLifecycleOwner){
+            DeLog.d(TAG, "status responsr $it")
         }
         viewModel.getLastTransaction(10).observe(viewLifecycleOwner) {
             binding.listTransaction.setData(ArrayList(it))

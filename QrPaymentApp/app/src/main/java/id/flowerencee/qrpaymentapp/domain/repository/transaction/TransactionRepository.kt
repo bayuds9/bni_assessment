@@ -1,6 +1,6 @@
 package id.flowerencee.qrpaymentapp.domain.repository.transaction
 
-import id.flowerencee.qrpaymentapp.data.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {

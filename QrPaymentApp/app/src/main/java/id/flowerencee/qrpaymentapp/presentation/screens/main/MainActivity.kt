@@ -1,5 +1,6 @@
 package id.flowerencee.qrpaymentapp.presentation.screens.main
 
+import android.Manifest
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
@@ -15,6 +16,10 @@ import id.flowerencee.qrpaymentapp.presentation.shared.support.BaseActivity
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+        private const val REQUEST_CODE_PERMISSIONS = 10
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

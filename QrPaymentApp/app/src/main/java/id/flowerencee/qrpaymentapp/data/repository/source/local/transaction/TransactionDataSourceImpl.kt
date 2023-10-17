@@ -1,7 +1,7 @@
-package id.flowerencee.qrpaymentapp.data.repository.source.transaction
+package id.flowerencee.qrpaymentapp.data.repository.source.local.transaction
 
 import id.flowerencee.qrpaymentapp.data.database.dao.TransactionDao
-import id.flowerencee.qrpaymentapp.data.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf

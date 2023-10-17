@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.flowerencee.qrpaymentapp.R
-import id.flowerencee.qrpaymentapp.data.entity.UserAccount
+import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.FragmentAccountBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.MainActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryActivity

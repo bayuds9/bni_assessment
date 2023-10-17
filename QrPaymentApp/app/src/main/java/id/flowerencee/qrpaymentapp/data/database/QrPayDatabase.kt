@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import id.flowerencee.qrpaymentapp.data.database.dao.TransactionDao
 import id.flowerencee.qrpaymentapp.data.database.dao.UserAccountDao
-import id.flowerencee.qrpaymentapp.data.entity.Transaction
-import id.flowerencee.qrpaymentapp.data.entity.UserAccount
+import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 
 @Database(
     entities = [

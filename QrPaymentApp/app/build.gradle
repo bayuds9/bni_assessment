@@ -23,6 +23,9 @@ android {
         buildFeatures {
             buildConfig = true
         }
+
+        buildConfigField "String", "BASE_URL", API_URL
+        buildConfigField "String", "BEARER_TOKEN", BEARER_TOKEN
     }
 
     buildTypes {
@@ -90,4 +93,13 @@ dependencies {
     implementation "androidx.camera:camera-view:$camerax_version"
 
     implementation 'com.google.mlkit:barcode-scanning:17.2.0'
+
+    def ktor_version = '2.3.4'
+    implementation "io.ktor:ktor-serialization-gson:$ktor_version"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-client-okhttp:$ktor_version"
+    implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
+
+    implementation 'com.github.chuckerteam.chucker:library:4.0.0'
 }

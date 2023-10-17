@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.flowerencee.qrpaymentapp.R
-import id.flowerencee.qrpaymentapp.data.entity.Transaction
-import id.flowerencee.qrpaymentapp.data.entity.UserAccount
+import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.ItemTransactionBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutTransactionListBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency

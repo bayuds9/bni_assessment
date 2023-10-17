@@ -3,7 +3,10 @@ package id.flowerencee.qrpaymentapp
 import android.app.Application
 import com.google.android.material.color.DynamicColors
 import id.flowerencee.qrpaymentapp.dependency.accountUseCaseModule
+import id.flowerencee.qrpaymentapp.dependency.apiModule
+import id.flowerencee.qrpaymentapp.dependency.dataSourceModule
 import id.flowerencee.qrpaymentapp.dependency.databaseModule
+import id.flowerencee.qrpaymentapp.dependency.promoUseCaseModule
 import id.flowerencee.qrpaymentapp.dependency.repositoryModule
 import id.flowerencee.qrpaymentapp.dependency.transactionUseCaseModule
 import id.flowerencee.qrpaymentapp.dependency.viewModelModule
@@ -17,7 +20,18 @@ class TheApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@TheApp)
-            modules(listOf(databaseModule, repositoryModule, transactionUseCaseModule, accountUseCaseModule, viewModelModule))
+            modules(
+                listOf(
+                    apiModule,
+                    databaseModule,
+                    dataSourceModule,
+                    repositoryModule,
+                    transactionUseCaseModule,
+                    accountUseCaseModule,
+                    promoUseCaseModule,
+                    viewModelModule
+                )
+            )
         }
         DynamicColors.applyToActivitiesIfAvailable(this)
     }

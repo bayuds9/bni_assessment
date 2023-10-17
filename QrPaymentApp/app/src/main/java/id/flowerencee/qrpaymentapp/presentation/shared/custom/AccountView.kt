@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import id.flowerencee.qrpaymentapp.R
-import id.flowerencee.qrpaymentapp.data.entity.UserAccount
+import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.ItemAccountBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutAccountBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency

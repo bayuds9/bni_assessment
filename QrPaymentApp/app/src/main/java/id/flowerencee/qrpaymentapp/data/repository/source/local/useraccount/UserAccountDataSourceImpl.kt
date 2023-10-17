@@ -1,7 +1,7 @@
-package id.flowerencee.qrpaymentapp.data.repository.source.useraccount
+package id.flowerencee.qrpaymentapp.data.repository.source.local.useraccount
 
 import id.flowerencee.qrpaymentapp.data.database.dao.UserAccountDao
-import id.flowerencee.qrpaymentapp.data.entity.UserAccount
+import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 import kotlinx.coroutines.flow.Flow
 
 class UserAccountDataSourceImpl(

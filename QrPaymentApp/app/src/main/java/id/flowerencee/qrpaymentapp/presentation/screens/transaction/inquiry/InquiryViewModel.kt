@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import id.flowerencee.qrpaymentapp.data.entity.Transaction
-import id.flowerencee.qrpaymentapp.data.entity.UserAccount
+import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.AddTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCase
