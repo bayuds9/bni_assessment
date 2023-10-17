@@ -142,13 +142,8 @@ class TransactionView : ConstraintLayout {
         binding.tvLabel.text = title
     }
 
-    fun setData(list: ArrayList<Transaction>, limit: Int = 10) {
-        val sorted = list.sortedByDescending { it.transactionTime }
-        val listResult = when(sorted.size > limit) {
-            true -> sorted.take(limit)
-            false -> sorted
-        }
-        transactionAdapter?.setData(ArrayList(listResult))
+    fun setData(list: ArrayList<Transaction>) {
+        transactionAdapter?.setData(list)
     }
 
     fun setListener(transactionListener: TransactionListener) {
