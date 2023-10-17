@@ -22,4 +22,8 @@ class UserAccountDataSourceImpl(
     override suspend fun getAccount(id: Int): UserAccount? {
         return dao.getAccount(id)
     }
+
+    override suspend fun getAccountByNumber(number: String): UserAccount? {
+        return dao.getAccountByNumber(number)
+    }
 }

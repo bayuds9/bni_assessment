@@ -21,6 +21,8 @@ import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.TopUpAccountBalanceUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.UpdateAccountUseCase
+import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountViewModel
+import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.inquiry.InquiryViewModel
@@ -137,9 +139,11 @@ val transactionUseCaseModule = module {
 
 val viewModelModule = module {
     viewModel { DashboardViewModel(get(), get(), get()) }
+    viewModel { AccountViewModel(get(), get()) }
     viewModel { ScannerViewModel() }
     viewModel { InquiryViewModel(get(), get(), get()) }
     viewModel { ReceiptViewModel(get(), get()) }
+    viewModel { HistoryViewModel(get(), get()) }
     /*viewModel { PaymentViewModel(get(), get()) }
     viewModel { MainViewModel() }
     viewModel { TransactionViewModel() }*/

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ActivityMainBinding
+import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerFragment
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
@@ -30,6 +31,7 @@ class MainActivity : BaseActivity() {
         binding.navBottom.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_dashboard -> setCurrentFragment(openDashboard())
+                R.id.menu_account -> setCurrentFragment(openAccount())
                 R.id.menu_scann -> setCurrentFragment(openScanner())
                 /*R.id.menu_setting -> setCurrentFragment(setting)*/
             }
@@ -39,6 +41,10 @@ class MainActivity : BaseActivity() {
 
     private fun openDashboard(): DashboardFragment {
         return DashboardFragment.newInstance()
+    }
+
+    private fun openAccount(): AccountFragment {
+        return AccountFragment.newInstance()
     }
 
     private fun openScanner(): ScannerFragment {

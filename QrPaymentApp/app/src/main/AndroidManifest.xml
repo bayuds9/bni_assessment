@@ -32,6 +32,8 @@
             android:exported="true"/>
         <activity android:name=".presentation.screens.transaction.receipt.ReceiptActivity"
             android:exported="true"/>
+        <activity android:name=".presentation.screens.main.account.history.HistoryActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

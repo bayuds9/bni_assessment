@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import android.window.OnBackInvokedDispatcher
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ActivityInquiryBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptActivity
@@ -19,7 +17,6 @@ import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrenc
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.`object`.DialogData
-import id.flowerencee.qrpaymentapp.presentation.shared.`object`.TextLabel
 import id.flowerencee.qrpaymentapp.presentation.shared.support.BaseActivity
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,9 +28,10 @@ class InquiryActivity : BaseActivity() {
     companion object {
         private val TAG = InquiryActivity::class.java.simpleName
         private const val EXTRA_QR = "EXTRA_QR"
-        fun myIntent(context: Context, qrData: String) = Intent(context, InquiryActivity::class.java).apply {
-            putExtra(EXTRA_QR, qrData)
-        }
+        fun myIntent(context: Context, qrData: String) =
+            Intent(context, InquiryActivity::class.java).apply {
+                putExtra(EXTRA_QR, qrData)
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,26 +49,59 @@ class InquiryActivity : BaseActivity() {
     }
 
     private fun initData() {
-        viewModel.inquiryData.observe(this){
+        viewModel.inquiryData.observe(this) {
             binding.inquiryData.setData(it)
         }
-        viewModel.getSof().observe(this){
-            val listString = ArrayList<String>()
-            it.forEach { userAccount ->
-                listString.add("${userAccount.accountNumber}-${userAccount.accountOwner} \n${userAccount.balance?.reformatCurrency("Rp")}")
+        viewModel.getSof().observe(this) {
+            when (it.isNotEmpty()) {
+                true -> {
+                    val listString = ArrayList<String>()
+                    it.forEach { userAccount ->
+                        listString.add(
+                            "${userAccount.accountNumber}-${userAccount.accountOwner} \n${
+                                userAccount.balance?.reformatCurrency(
+                                    "Rp"
+                                )
+                            }"
+                        )
+                    }
+                    binding.inputSof.setType(InputView.TYPE.DROPDOWN, listString)
+                }
+
+                false -> {
+                    showEmptySof()
+                }
             }
-            binding.inputSof.setType(InputView.TYPE.DROPDOWN, listString)
         }
-        viewModel.transactionId.observe(this){
+        viewModel.transactionId.observe(this) {
             activityLauncher.launch(ReceiptActivity.myIntent(this, it))
             setResult(RESULT_OK)
             finish()
         }
     }
 
+    private fun showEmptySof() {
+        val listener = object : PopUpInterface {
+            override fun onPositive() {
+                setResult(RESULT_OK)
+                finish()
+            }
+        }
+        val popUpData = DialogData(
+            getString(R.string.warning),
+            getString(R.string.no_account),
+            positive = getString(R.string.okay)
+        )
+        showPopup(popUpData, listener)
+    }
+
     private fun initUi() {
         binding.tbToolbar.apply {
-            initToolbar(this.toolbar(), getString(R.string.inquiry), ContextCompat.getDrawable(context, R.drawable.round_arrow_back))
+            initToolbar(
+                this.toolbar(),
+                getString(R.string.inquiry),
+                ContextCompat.getDrawable(context, R.drawable.round_arrow_back)
+            )
         }
         binding.inputSof.apply {
             setActivity(this@InquiryActivity)
@@ -95,7 +126,7 @@ class InquiryActivity : BaseActivity() {
         }
         validateButton()
         binding.btnNext.setOnClickListener {
-            when(binding.btnNext.text) {
+            when (binding.btnNext.text) {
                 getString(R.string.next) -> {
                     val transactionAmount = binding.inputAmount.getTextValue().toDouble()
                     viewModel.inquiryTransaction(transactionAmount, binding.inputSof.getTextValue())
@@ -107,6 +138,7 @@ class InquiryActivity : BaseActivity() {
                     }
                     binding.btnNext.text = getString(R.string.confirm)
                 }
+
                 getString(R.string.confirm) -> {
                     showValidation()
                 }
@@ -120,10 +152,9 @@ class InquiryActivity : BaseActivity() {
     }
 
     private fun showValidation() {
-        val popupData = DialogData(getString(R.string.finish_challenge), positive = getString(R.string.submit), negative = getString(R.string.cancel))
         val listener = object : PopUpInterface {
             override fun onResult(success: Boolean) {
-                when(success){
+                when (success) {
                     true -> viewModel.executeTransaction()
                     false -> Toast.makeText(
                         this@InquiryActivity,
@@ -133,12 +164,13 @@ class InquiryActivity : BaseActivity() {
                 }
             }
         }
-        showChallengePopup(popupData, listener = listener)
+        showChallengePopup(listener = listener)
     }
 
     private fun validateButton() {
-        with(binding){
-            btnNext.isEnabled = inputSof.getTextValue().isNotEmpty() && inputAmount.getTextValue().isNotEmpty()
+        with(binding) {
+            btnNext.isEnabled =
+                inputSof.getTextValue().isNotEmpty() && inputAmount.getTextValue().isNotEmpty()
         }
     }
 
@@ -152,7 +184,6 @@ class InquiryActivity : BaseActivity() {
         )
         val listener = object : PopUpInterface {
             override fun onNegative() {
-                super.onNegative()
                 setResult(RESULT_CANCELED)
                 finish()
             }

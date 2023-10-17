@@ -8,4 +8,5 @@ interface UserAccountDataSource {
     suspend fun addUserAccount(userAccount: UserAccount): Long
     suspend fun updateAccount(userAccount: UserAccount)
     suspend fun getAccount(id: Int): UserAccount?
+    suspend fun getAccountByNumber(number: String): UserAccount?
 }

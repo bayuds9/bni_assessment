@@ -21,4 +21,7 @@ interface UserAccountDao {
 
     @Query("SELECT * FROM `user_account` WHERE account_id IN (:id)")
     suspend fun getAccount(id: Int): UserAccount?
+
+    @Query("SELECT * FROM `user_account` WHERE account_number in (:number)")
+    suspend fun getAccountByNumber(number: String): UserAccount?
 }

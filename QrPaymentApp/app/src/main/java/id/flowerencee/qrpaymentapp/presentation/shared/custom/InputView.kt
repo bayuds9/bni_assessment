@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.media.tv.interactive.AppLinkInfo
 import android.text.Editable
+import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +69,9 @@ class InputView : ConstraintLayout {
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            binding.inputLabel.isErrorEnabled = false
+        }
 
         override fun afterTextChanged(s: Editable?) {
             when {
@@ -109,6 +113,19 @@ class InputView : ConstraintLayout {
 
     }
 
+    fun setError() {
+        binding.inputLabel.error = "Invalid"
+    }
+
+    fun setDone() {
+        binding.etInput.imeOptions = EditorInfo.IME_ACTION_DONE
+    }
+
+    fun setMaxLength(length: Int, counter: Boolean = true) {
+        binding.inputLabel.counterMaxLength = length
+        if (counter) binding.inputLabel.isCounterEnabled = true
+    }
+
     fun enableClearText() {
         binding.inputLabel.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
     }
@@ -122,7 +139,7 @@ class InputView : ConstraintLayout {
             TYPE.CURRENCY -> {
                 binding.etInput.inputType = InputType.TYPE_CLASS_NUMBER
                 binding.etInput.setText(data.toString())
-                binding.etInput.isEnabled = false
+                binding.etInput.isEnabled = data == null
             }
             TYPE.NUMBER -> binding.etInput.inputType = InputType.TYPE_CLASS_NUMBER
             TYPE.DROPDOWN -> {

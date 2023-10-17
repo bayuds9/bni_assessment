@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.entity.Transaction
-import id.flowerencee.qrpaymentapp.data.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.MainActivity
+import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptActivity
-import id.flowerencee.qrpaymentapp.presentation.shared.custom.AccountView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment : Fragment() {
@@ -61,20 +59,9 @@ class DashboardFragment : Fragment() {
                 false -> {}
             }
         }
-        viewModel.getUserAccount().observe(viewLifecycleOwner) {
-            when(it.isEmpty()){
-                true -> {
-                    binding.containerEmpty.toSHow()
-                }
-                false -> {
-                    binding.containerEmpty.toHide()
-                    binding.accList.setData(it.toCollection(ArrayList()), 3)
-                }
-            }
-        }
-        viewModel.getLastTransaction(10).observe(viewLifecycleOwner){
+        viewModel.getLastTransaction(10).observe(viewLifecycleOwner) {
             binding.listTransaction.setData(ArrayList(it))
-            when(it.isEmpty()){
+            when (it.isEmpty()) {
                 true -> binding.containerEmptyHistory.toSHow()
                 false -> binding.containerEmptyHistory.toHide()
             }
@@ -82,36 +69,24 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initUi() {
-        val accountListener = object : AccountView.AccountListener {
-            override fun onClick(account: UserAccount?) {
-                super.onClick(account)
-                DeLog.d(TAG, "clicked account $account")
-            }
-        }
         val transactionListener = object : TransactionView.TransactionListener {
             override fun onClickTransaction(transaction: Transaction) {
                 transaction.id?.let {
-                    with((activity as MainActivity)){
+                    with((activity as MainActivity)) {
                         activityLauncher.launch(ReceiptActivity.myIntent(this, it))
                     }
                 }
             }
 
         }
-        binding.accList.apply {
-            setListener(accountListener)
-        }
         binding.listTransaction.apply {
             setLabel(getString(R.string.last_transaction))
             setListener(transactionListener)
         }
-        binding.btnPlus.setOnClickListener {
-            val userAccount = UserAccount(
-                accountOwner = "sukri",
-                accountNumber = "6765756577644",
-                balance = 2129000.0
-            )
-            viewModel.addAccount(userAccount)
+        binding.tvSeeAll.setOnClickListener {
+            with((activity as MainActivity)) {
+                activityLauncher.launch(HistoryActivity.myIntent(this))
+            }
         }
     }
 

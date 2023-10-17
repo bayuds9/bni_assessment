@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.ItemAccountBinding
@@ -140,6 +141,10 @@ class AccountView : ConstraintLayout {
             layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             adapter = accountAdapter
         }
+    }
+
+    fun setLayoutManager(manager: LayoutManager) {
+        binding.rvItems.layoutManager = manager
     }
 
     fun setData(data: ArrayList<UserAccount>, limit: Int? = null) {

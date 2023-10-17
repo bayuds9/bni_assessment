@@ -20,6 +20,10 @@ class UserAccountRepositoryImpl(
         return source.getAccount(id)
     }
 
+    override suspend fun getAccountByNumber(number: String): UserAccount? {
+        return source.getAccountByNumber(number)
+    }
+
     override suspend fun updateUserAccount(userAccount: UserAccount) {
         source.updateAccount(userAccount)
     }

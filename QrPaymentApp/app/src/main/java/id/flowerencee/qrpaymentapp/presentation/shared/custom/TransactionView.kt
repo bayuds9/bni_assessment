@@ -16,6 +16,7 @@ import id.flowerencee.qrpaymentapp.data.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.ItemTransactionBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutTransactionListBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import java.util.Date
 
 class TransactionView : ConstraintLayout {
@@ -140,6 +141,7 @@ class TransactionView : ConstraintLayout {
 
     fun setLabel(title: String) {
         binding.tvLabel.text = title
+        if (title.isEmpty()) binding.tvLabel.toHide()
     }
 
     fun setData(list: ArrayList<Transaction>) {

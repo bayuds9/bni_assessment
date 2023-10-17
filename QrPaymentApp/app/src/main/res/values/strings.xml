@@ -17,6 +17,11 @@
     <string name="success">Success</string>
     <string name="failed">Failed</string>
 
+    <string name="create_account">Create Account</string>
+    <string name="account_owner_name">Owner Account</string>
+    <string name="account_number">Account Number</string>
+    <string name="initial_balance">Initial Balance</string>
+
     <string name="attention">Attention!</string>
     <string name="warning">Warning!</string>
     <string name="cancel_transaction">Cancel Transaction?</string>
@@ -27,6 +32,7 @@
 
     <string name="payment_amount">Payment Amount</string>
     <string name="select_sof">Select Source of Fund</string>
+    <string name="no_account">You have no account, please create account to continue</string>
     <string name="finish_challenge">Finish this challenge to continue</string>
 
     <string name="sure">Sure</string>
@@ -36,6 +42,7 @@
     <string name="no">No</string>
     <string name="open_setting">Open Setting</string>
     <string name="permission_required">Permission Required</string>
+    <string name="okay">Okay</string>
     <string name="next">Next</string>
     <string name="close">Close</string>
     <string name="action_continue">Continue</string>
