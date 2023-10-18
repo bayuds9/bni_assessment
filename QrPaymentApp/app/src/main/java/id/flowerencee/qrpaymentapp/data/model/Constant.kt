@@ -13,7 +13,9 @@ object Constant {
     }
     interface PARAM {
         companion object {
-            const val BEARER_TOKEN = "Bearer "
+            const val READ_TIME_OUT = 60L
+            const val CONNECTION_TIME_OUT = 60L
+            const val CALL_TIME_OUT = 60L
         }
     }
 }

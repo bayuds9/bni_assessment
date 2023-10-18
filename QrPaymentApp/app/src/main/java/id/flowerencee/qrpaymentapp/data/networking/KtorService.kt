@@ -4,6 +4,7 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import id.flowerencee.qrpaymentapp.BuildConfig
+import id.flowerencee.qrpaymentapp.data.model.Constant
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -37,9 +38,9 @@ interface KtorService {
                         }
                         config {
                             followRedirects(true)
-                            readTimeout(30, TimeUnit.SECONDS)
-                            connectTimeout(30, TimeUnit.SECONDS)
-                            callTimeout(30, TimeUnit.SECONDS)
+                            readTimeout(Constant.PARAM.READ_TIME_OUT, TimeUnit.SECONDS)
+                            connectTimeout(Constant.PARAM.CONNECTION_TIME_OUT, TimeUnit.SECONDS)
+                            callTimeout(Constant.PARAM.CALL_TIME_OUT, TimeUnit.SECONDS)
                         }
                     }
                     defaultRequest {
