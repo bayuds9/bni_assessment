@@ -1,7 +1,6 @@
 package id.flowerencee.qrpaymentapp.presentation.shared.custom
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +10,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoItem
 import id.flowerencee.qrpaymentapp.databinding.ItemPromoBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutPromoBinding
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.animateShimmer
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.loadImage
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
@@ -47,33 +42,7 @@ class PromoView : ConstraintLayout {
                                 it.large?.url != null -> it.large?.url
                                 else -> img.url
                             }
-                            Glide.with(this)
-                                .load(imgUrl)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .skipMemoryCache(true)
-                                .listener(object : RequestListener<Drawable> {
-                                    override fun onLoadFailed(
-                                        e: GlideException?,
-                                        model: Any?,
-                                        target: Target<Drawable>,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        return true
-                                    }
-
-                                    override fun onResourceReady(
-                                        resource: Drawable,
-                                        model: Any,
-                                        target: Target<Drawable>?,
-                                        dataSource: DataSource,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        bindData.viewLoading.toHide()
-                                        return false
-                                    }
-
-                                })
-                                .into(bindData.imgPromo)
+                            if (imgUrl != null) context.loadImage(imgUrl, bindData.imgPromo, bindData.viewLoading)
                         }
                     }
                     bindData.imgPromo.setOnClickListener {
@@ -84,6 +53,7 @@ class PromoView : ConstraintLayout {
                 fun bindLoading() = with(itemView) {
                     val bindData = ItemPromoBinding.bind(this)
                     bindData.viewLoading.toSHow()
+                    bindData.viewLoading.animateShimmer()
                 }
             }
 
@@ -174,7 +144,7 @@ class PromoView : ConstraintLayout {
 
     private fun initNoRecord() {
         binding.promoRecords.root.toHide()
-        with(binding.promoRecords){
+        with(binding.promoRecords) {
             tvNoRecord.text = mContext.getString(R.string.no_promo_to_show)
         }
     }
@@ -200,7 +170,7 @@ class PromoView : ConstraintLayout {
 
     fun setData(list: ArrayList<PromoItem>) {
         DeLog.d(TAG, list.toString())
-        when(list.isEmpty()){
+        when (list.isEmpty()) {
             true -> binding.promoRecords.root.toSHow()
             false -> binding.promoRecords.root.toHide()
         }

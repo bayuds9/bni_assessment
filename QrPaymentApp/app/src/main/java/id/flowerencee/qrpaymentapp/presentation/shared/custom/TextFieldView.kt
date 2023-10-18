@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.google.android.material.color.MaterialColors
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ItemTextFieldBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutTextFieldsBinding
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.`object`.TextLabel
 
@@ -48,6 +50,10 @@ class TextFieldView : ConstraintLayout {
                     val bindData = ItemTextFieldBinding.bind(this)
                     bindData.tvValue.text = item.value
                     bindData.tvLabel.text = item.label
+                    if (item.label.isEmpty()) {
+                        bindData.tvLabel.toHide()
+                        bindData.tvValue.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    }
                 }
             }
 
@@ -101,6 +107,12 @@ class TextFieldView : ConstraintLayout {
         binding.tvDateTime.text = time
         binding.tvStatus.toSHow()
         binding.tvDateTime.toSHow()
+    }
+
+    fun setHeader(text: String) {
+        binding.tvStatus.text = text
+        binding.tvDateTime.toHide()
+        binding.tvStatus.toSHow()
     }
     fun setData(list: ArrayList<TextLabel>){
         textAdapter?.setData(list)

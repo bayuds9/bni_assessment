@@ -14,9 +14,12 @@ import com.bumptech.glide.request.target.Target
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoItem
 import id.flowerencee.qrpaymentapp.databinding.ActivityPromoBinding
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.loadImage
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.parcelable
 import id.flowerencee.qrpaymentapp.presentation.shared.support.BaseActivity
+import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PromoActivity : BaseActivity() {
     companion object {
@@ -26,7 +29,8 @@ class PromoActivity : BaseActivity() {
         }
     }
     private lateinit var binding: ActivityPromoBinding
-    private var promo : PromoItem? = null
+    private val viewModel : PromoViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPromoBinding.inflate(layoutInflater)
@@ -37,52 +41,33 @@ class PromoActivity : BaseActivity() {
     }
 
     private fun initBundle() {
-        promo = intent.parcelable(EXTRA_PROMO)
+        val promo : PromoItem? = intent.parcelable(EXTRA_PROMO)
+        promo?.let {
+            viewModel.setPromoData(it)
+        }
     }
 
     private fun initData() {
-        promo?.img?.let { img ->
-            img.formats?.let {
-                val imgUrl = when {
-                    it.large?.url != null -> it.large?.url
-                    it.medium?.url != null -> it.medium?.url
-                    it.small?.url != null -> it.small?.url
-                    it.thumbnail?.url != null -> it.thumbnail?.url
-                    else -> img.url
-                }
-                Glide.with(this)
-                    .load(imgUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .skipMemoryCache(true)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            binding.imgPromo.setImageDrawable(ContextCompat.getDrawable(this@PromoActivity, R.drawable.round_article))
-                            return true
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable,
-                            model: Any,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            binding.imgLoading.toHide()
-                            return false
-                        }
-
-                    })
-                    .into(binding.imgPromo)
+        viewModel.getPromoDetail()
+        viewModel.getTitle().observe(this){raw ->
+            raw?.let {
+                binding.tbToolbar.setTitle(it)
+                binding.viewDetail.setHeader(it)
             }
+        }
+        viewModel.getImage().observe(this){raw ->
+            raw?.let {
+                loadImage(it, binding.imgPromo, binding.imgLoading, R.drawable.round_article)
+            }
+        }
+        viewModel.promoDetail.observe(this){
+            binding.viewDetail.setData(ArrayList(it))
         }
     }
 
     private fun initUi() {
-
+        binding.tbToolbar.apply {
+            initToolbar(this.toolbar(), getString(R.string.promo), iconBack = ContextCompat.getDrawable(this@PromoActivity, R.drawable.round_arrow_back))
+        }
     }
 }

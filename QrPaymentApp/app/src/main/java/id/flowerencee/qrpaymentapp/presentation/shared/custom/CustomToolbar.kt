@@ -41,6 +41,6 @@ class CustomToolbar : ConstraintLayout {
         binding.topAppBar.title = text
     }
 
-    fun toolbar() : Toolbar = binding.topAppBar
+    fun toolbar(): Toolbar = binding.topAppBar
 
 }

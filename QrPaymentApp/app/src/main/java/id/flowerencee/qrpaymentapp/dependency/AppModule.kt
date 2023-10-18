@@ -30,6 +30,7 @@ import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountView
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerViewModel
+import id.flowerencee.qrpaymentapp.presentation.screens.promo.PromoViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.inquiry.InquiryViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptViewModel
 import org.koin.android.ext.koin.androidApplication
@@ -181,6 +182,7 @@ val viewModelModule = module {
     viewModel { InquiryViewModel(get(), get(), get()) }
     viewModel { ReceiptViewModel(get(), get()) }
     viewModel { HistoryViewModel(get(), get()) }
+    viewModel { PromoViewModel() }
     /*viewModel { PaymentViewModel(get(), get()) }
     viewModel { MainViewModel() }
     viewModel { TransactionViewModel() }*/

@@ -7,14 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
+import id.flowerencee.qrpaymentapp.data.model.response.failed.StatusResponse
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoItem
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.MainActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.promo.PromoActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptActivity
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PromoView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.showPopup
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
@@ -57,6 +60,21 @@ class DashboardFragment : Fragment() {
     }
 
     private fun initData() {
+        requestPromo()
+        requestTransaction()
+    }
+
+    private fun requestTransaction() {
+        viewModel.getLastTransaction(10).observe(viewLifecycleOwner) {
+            binding.listTransaction.setData(ArrayList(it))
+            when (it.isEmpty()) {
+                true -> binding.recordTransaction.root.toSHow()
+                false -> binding.recordTransaction.root.toHide()
+            }
+        }
+    }
+
+    private fun requestPromo() {
         viewModel.getAllPromo().observe(viewLifecycleOwner){
             DeLog.d(TAG, "response $it")
             binding.viewPromo.setData(ArrayList(it))
@@ -66,13 +84,18 @@ class DashboardFragment : Fragment() {
             if (it != null) {
                 binding.viewPromo.setData(arrayListOf())
             }
+            showInvalidAction(it)
         }
-        viewModel.getLastTransaction(10).observe(viewLifecycleOwner) {
-            binding.listTransaction.setData(ArrayList(it))
-            when (it.isEmpty()) {
-                true -> binding.recordTransaction.root.toSHow()
-                false -> binding.recordTransaction.root.toHide()
+    }
+
+    private fun showInvalidAction(statusResponse: StatusResponse?) {
+        if (isAdded){
+            val listener = object : PopUpInterface {
+                override fun onPositive() {
+                    requestPromo()
+                }
             }
+            (activity as MainActivity).showStatusPopup(statusResponse ?: StatusResponse(), listener)
         }
     }
 
