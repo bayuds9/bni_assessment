@@ -44,10 +44,10 @@ class PromoActivity : BaseActivity() {
         promo?.img?.let { img ->
             img.formats?.let {
                 val imgUrl = when {
-                    it.small?.url != null -> it.small?.url
-                    it.medium?.url != null -> it.medium?.url
-                    it.thumbnail?.url != null -> it.thumbnail?.url
                     it.large?.url != null -> it.large?.url
+                    it.medium?.url != null -> it.medium?.url
+                    it.small?.url != null -> it.small?.url
+                    it.thumbnail?.url != null -> it.thumbnail?.url
                     else -> img.url
                 }
                 Glide.with(this)
