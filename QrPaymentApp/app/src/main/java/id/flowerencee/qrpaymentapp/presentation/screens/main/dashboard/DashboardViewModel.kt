@@ -1,12 +1,9 @@
 package id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import id.flowerencee.qrpaymentapp.domain.usecase.promo.GetAllPromoUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetLimitedTransactionDescendingUseCase
-import kotlinx.coroutines.flow.collect
 
 class DashboardViewModel(
     private val getAllPromoUseCase: GetAllPromoUseCase,
@@ -26,6 +23,8 @@ class DashboardViewModel(
     }
 
     fun getStatus() = liveData {
-        emit(getAllPromoUseCase.getStatus())
+        getAllPromoUseCase.getStatus().collect() {
+            emit(it)
+        }
     }
 }

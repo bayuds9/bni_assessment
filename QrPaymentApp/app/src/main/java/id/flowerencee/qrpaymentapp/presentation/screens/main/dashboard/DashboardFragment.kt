@@ -58,16 +58,19 @@ class DashboardFragment : Fragment() {
     private fun initData() {
         viewModel.getAllPromo().observe(viewLifecycleOwner){
             DeLog.d(TAG, "response $it")
-            binding.rvPromo.setData(ArrayList(it))
+            binding.viewPromo.setData(ArrayList(it))
         }
         viewModel.getStatus().observe(viewLifecycleOwner){
-            DeLog.d(TAG, "status responsr $it")
+            DeLog.d(TAG, "status response ${it}")
+            if (it != null) {
+                binding.viewPromo.setData(arrayListOf())
+            }
         }
         viewModel.getLastTransaction(10).observe(viewLifecycleOwner) {
             binding.listTransaction.setData(ArrayList(it))
             when (it.isEmpty()) {
-                true -> binding.containerEmptyHistory.toSHow()
-                false -> binding.containerEmptyHistory.toHide()
+                true -> binding.recordTransaction.root.toSHow()
+                false -> binding.recordTransaction.root.toHide()
             }
         }
     }
@@ -78,7 +81,8 @@ class DashboardFragment : Fragment() {
                 DeLog.d(TAG, "promo clicked $item")
             }
         }
-        binding.rvPromo.apply {
+        binding.viewPromo.apply {
+            setLoading()
             setListener(promoListener)
         }
         val transactionListener = object : TransactionView.TransactionListener {

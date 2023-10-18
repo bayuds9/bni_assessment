@@ -1,14 +1,12 @@
 package id.flowerencee.qrpaymentapp.data.repository.source.remote.promo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import id.flowerencee.qrpaymentapp.BuildConfig
 import id.flowerencee.qrpaymentapp.data.model.Constant
 import id.flowerencee.qrpaymentapp.data.model.response.failed.StatusResponse
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponse
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponseItem
-import id.flowerencee.qrpaymentapp.data.networking.MappingFailedResponse
 import id.flowerencee.qrpaymentapp.data.networking.KtorService
+import id.flowerencee.qrpaymentapp.data.networking.MappingFailedResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.isSuccess
@@ -22,8 +20,7 @@ import kotlinx.coroutines.withContext
 class PromoDataSourceImpl(
     private val ktorService: KtorService
 ) : PromoDataSource {
-    private var _status = MutableLiveData<StatusResponse>()
-    val status: LiveData<StatusResponse> get() = _status
+    var status: Flow<StatusResponse> = flowOf()
     override suspend fun getPromo(): Flow<List<PromoListResponseItem>> {
         val request = HttpRequestBuilder().apply {
             url { path(Constant.ENDPOINT.GET_PROMO_LIST) }
@@ -39,18 +36,20 @@ class PromoDataSourceImpl(
                         when (it.status.isSuccess()) {
                             true -> response = it.body<List<PromoListResponseItem>>()
                             else -> withContext(Dispatchers.Main) {
-                                _status.value = MappingFailedResponse().mappingFailedResponse(it)
+                                status = flowOf(MappingFailedResponse().mappingFailedResponse(it))
                             }
                         }
                     } catch (e: JsonConvertException) {
                         e.printStackTrace()
                         withContext(Dispatchers.Main) {
-                            _status.value = StatusResponse(e.message.toString(), e.cause.toString())
+                            status =
+                                flowOf(StatusResponse(e.message.toString(), e.cause.toString()))
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
                         withContext(Dispatchers.Main) {
-                            _status.value = StatusResponse(e.message.toString(), e.cause.toString())
+                            status =
+                                flowOf(StatusResponse(e.message.toString(), e.cause.toString()))
                         }
                     }
                 }
@@ -58,7 +57,7 @@ class PromoDataSourceImpl(
 
             false -> {
                 withContext(Dispatchers.Main) {
-                    _status.value = StatusResponse("Failed", "Unknown Error")
+                    status = flowOf(StatusResponse("Failed", "Unknown Error"))
                 }
             }
         }

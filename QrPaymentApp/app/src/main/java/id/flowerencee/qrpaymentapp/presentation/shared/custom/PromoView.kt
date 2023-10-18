@@ -1,6 +1,7 @@
 package id.flowerencee.qrpaymentapp.presentation.shared.custom
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -10,27 +11,80 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponseItem
 import id.flowerencee.qrpaymentapp.databinding.ItemPromoBinding
-import id.flowerencee.qrpaymentapp.databinding.LayoutAccountBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutPromoBinding
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 
 class PromoView : ConstraintLayout {
     companion object {
         private val TAG = PromoView::class.java.simpleName
+
         class AdapterPromo(
             private val listener: (PromoListResponseItem) -> Unit
         ) : RecyclerView.Adapter<AdapterPromo.ViewHolder>() {
             private val data = ArrayList<PromoListResponseItem>()
+            private var loading = true
 
             inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 fun bind(item: PromoListResponseItem) = with(itemView) {
                     val bindData = ItemPromoBinding.bind(this)
+                    item.img?.let { img ->
+                        img.formats?.let {
+                            val imgUrl = when {
+                                it.small?.url != null -> it.small?.url
+                                it.medium?.url != null -> it.medium?.url
+                                it.thumbnail?.url != null -> it.thumbnail?.url
+                                it.large?.url != null -> it.large?.url
+                                else -> img.url
+                            }
+                            Glide.with(this)
+                                .load(imgUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .skipMemoryCache(true)
+                                .listener(object : RequestListener<Drawable> {
+                                    override fun onLoadFailed(
+                                        e: GlideException?,
+                                        model: Any?,
+                                        target: Target<Drawable>,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        return true
+                                    }
 
+                                    override fun onResourceReady(
+                                        resource: Drawable,
+                                        model: Any,
+                                        target: Target<Drawable>?,
+                                        dataSource: DataSource,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        bindData.viewLoading.toHide()
+                                        return false
+                                    }
+
+                                })
+                                .into(bindData.imgPromo)
+                        }
+                    }
+                    bindData.imgPromo.setOnClickListener {
+                        listener(item)
+                    }
                 }
 
+                fun bindLoading() = with(itemView) {
+                    val bindData = ItemPromoBinding.bind(this)
+                    bindData.viewLoading.toSHow()
+                }
             }
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,10 +97,14 @@ class PromoView : ConstraintLayout {
             override fun getItemCount(): Int = data.size
 
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                holder.bind(data[position])
+                when (loading) {
+                    true -> holder.bindLoading()
+                    false -> holder.bind(data[position])
+                }
             }
 
-            fun setData(list: ArrayList<PromoListResponseItem>){
+            fun setData(list: ArrayList<PromoListResponseItem>, load: Boolean = false) {
+                loading = load
                 val cbDiff = PromoCallback(data, list)
                 val resultDiff = DiffUtil.calculateDiff(cbDiff)
                 data.clear()
@@ -111,10 +169,18 @@ class PromoView : ConstraintLayout {
                 .inflate(R.layout.layout_promo, this, true)
         )
         initAdapter()
+        initNoRecord()
+    }
+
+    private fun initNoRecord() {
+        binding.promoRecords.root.toHide()
+        with(binding.promoRecords){
+            tvNoRecord.text = mContext.getString(R.string.no_promo_to_show)
+        }
     }
 
     private fun initAdapter() {
-        promoAdapter = AdapterPromo{
+        promoAdapter = AdapterPromo {
             listener?.onClickPromo(it)
         }
         binding.rvPromo.apply {
@@ -123,8 +189,21 @@ class PromoView : ConstraintLayout {
         }
     }
 
-    fun setData(list: ArrayList<PromoListResponseItem>){
+    fun setLoading() {
+        val list = ArrayList<PromoListResponseItem>()
+        repeat(5) {
+            list.add(PromoListResponseItem())
+        }
+        arrayListOf(PromoListResponseItem())
+        promoAdapter?.setData(list, true)
+    }
+
+    fun setData(list: ArrayList<PromoListResponseItem>) {
         DeLog.d(TAG, list.toString())
+        when(list.isEmpty()){
+            true -> binding.promoRecords.root.toSHow()
+            false -> binding.promoRecords.root.toHide()
+        }
         promoAdapter?.setData(list)
     }
 
