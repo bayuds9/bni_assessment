@@ -8,6 +8,11 @@ import android.provider.Settings
 import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import id.flowerencee.qrpaymentapp.R
+import id.flowerencee.qrpaymentapp.data.model.response.failed.StatusResponse
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.showPopup
+import id.flowerencee.qrpaymentapp.presentation.shared.`object`.DialogData
 
 open class BaseActivity : AppCompatActivity() {
     lateinit var activityLauncher: BetterActivityResult<Intent, ActivityResult>
@@ -16,18 +21,11 @@ open class BaseActivity : AppCompatActivity() {
         activityLauncher = BetterActivityResult.registerActivityForResult(this)
     }
 
-    fun goToDeviceSetting() {
-        val intent = Intent()
-        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-        val uri =
-            Uri.fromParts(
-                "package",
-                this@BaseActivity.packageName,
-                null
-            )
-        intent.data = uri
-        activityLauncher.launch(intent){
-            DeLog.d("BaseActivity", "Permission Result ${it.resultCode}")
+    fun showStatusPopup(statusResponse: StatusResponse, listener: PopUpInterface? = null) {
+        if (!isFinishing) {
+            val title = statusResponse.statusCode.toString() + " - " + statusResponse.error.toString()
+            val data = DialogData(title, statusResponse.message.toString(), getString(R.string.okay))
+            showPopup(data, listener)
         }
     }
 
