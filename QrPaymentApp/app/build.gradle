@@ -91,7 +91,6 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     // CameraX View class
     implementation "androidx.camera:camera-view:$camerax_version"
-
     implementation 'com.google.mlkit:barcode-scanning:17.2.0'
 
     def ktor_version = '2.3.4'
@@ -102,4 +101,5 @@ dependencies {
     implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
 
     implementation 'com.github.chuckerteam.chucker:library:4.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
 }
