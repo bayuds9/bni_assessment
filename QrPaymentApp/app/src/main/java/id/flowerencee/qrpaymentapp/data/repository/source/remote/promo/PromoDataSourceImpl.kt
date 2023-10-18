@@ -4,7 +4,7 @@ import id.flowerencee.qrpaymentapp.BuildConfig
 import id.flowerencee.qrpaymentapp.data.model.Constant
 import id.flowerencee.qrpaymentapp.data.model.response.failed.StatusResponse
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponse
-import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponseItem
+import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoItem
 import id.flowerencee.qrpaymentapp.data.networking.KtorService
 import id.flowerencee.qrpaymentapp.data.networking.MappingFailedResponse
 import io.ktor.client.call.body
@@ -21,20 +21,20 @@ class PromoDataSourceImpl(
     private val ktorService: KtorService
 ) : PromoDataSource {
     var status: Flow<StatusResponse> = flowOf()
-    override suspend fun getPromo(): Flow<List<PromoListResponseItem>> {
+    override suspend fun getPromo(): Flow<List<PromoItem>> {
         val request = HttpRequestBuilder().apply {
             url { path(Constant.ENDPOINT.GET_PROMO_LIST) }
             headers.append(Constant.HEADER.AUTHORIZATION, BuildConfig.BEARER_TOKEN)
             build()
         }
         val raw = ktorService.callGetHttp(request)
-        var response: List<PromoListResponseItem>? = null
+        var response: List<PromoItem>? = null
         when (raw != null) {
             true -> {
                 raw.let {
                     try {
                         when (it.status.isSuccess()) {
-                            true -> response = it.body<List<PromoListResponseItem>>()
+                            true -> response = it.body<List<PromoItem>>()
                             else -> withContext(Dispatchers.Main) {
                                 status = flowOf(MappingFailedResponse().mappingFailedResponse(it))
                             }

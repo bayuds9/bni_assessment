@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
-import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponseItem
+import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoItem
 import id.flowerencee.qrpaymentapp.databinding.FragmentDashboardBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.MainActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryActivity
+import id.flowerencee.qrpaymentapp.presentation.screens.promo.PromoActivity
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptActivity
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PromoView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
@@ -77,8 +78,11 @@ class DashboardFragment : Fragment() {
 
     private fun initUi() {
         val promoListener = object : PromoView.PromoListener {
-            override fun onClickPromo(item: PromoListResponseItem) {
+            override fun onClickPromo(item: PromoItem) {
                 DeLog.d(TAG, "promo clicked $item")
+                with((activity as MainActivity)){
+                    activityLauncher.launch(PromoActivity.myIntent(this, item))
+                }
             }
         }
         binding.viewPromo.apply {

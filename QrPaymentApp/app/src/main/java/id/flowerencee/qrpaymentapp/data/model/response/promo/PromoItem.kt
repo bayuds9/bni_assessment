@@ -1,8 +1,11 @@
 package id.flowerencee.qrpaymentapp.data.model.response.promo
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-data class PromoListResponseItem(
+@Parcelize
+data class PromoItem(
     @SerializedName("alt")
     var alt: String? = null,
     @SerializedName("count")
@@ -14,7 +17,7 @@ data class PromoListResponseItem(
     @SerializedName("desc")
     var desc: String? = null,
     @SerializedName("desc_promo")
-    var descPromo: Any? = null,
+    var descPromo: String? = null,
     @SerializedName("id")
     var id: Int? = null,
     @SerializedName("img")
@@ -28,11 +31,11 @@ data class PromoListResponseItem(
     @SerializedName("nama")
     var nama: String? = null,
     @SerializedName("name_promo")
-    var namePromo: Any? = null,
+    var namePromo: String? = null,
     @SerializedName("published_at")
     var publishedAt: String? = null,
     @SerializedName("Title")
-    var title: Any? = null,
+    var title: String? = null,
     @SerializedName("updated_at")
     var updatedAt: String? = null
-)
+) : Parcelable

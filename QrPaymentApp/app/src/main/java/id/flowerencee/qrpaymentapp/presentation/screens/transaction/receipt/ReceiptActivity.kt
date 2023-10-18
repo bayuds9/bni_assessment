@@ -19,7 +19,7 @@ class ReceiptActivity : BaseActivity() {
                 putExtra(EXTRA_TRANSACTION_ID, transactionId)
             }
 
-        private const val EXTRA_TRANSACTION_ID = "EXTRA_TRANSACTION_ID"
+        private const val EXTRA_TRANSACTION_ID = "extra_transaction_id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -27,7 +27,7 @@ class InquiryActivity : BaseActivity() {
 
     companion object {
         private val TAG = InquiryActivity::class.java.simpleName
-        private const val EXTRA_QR = "EXTRA_QR"
+        private const val EXTRA_QR = "extra_qr"
         fun myIntent(context: Context, qrData: String) =
             Intent(context, InquiryActivity::class.java).apply {
                 putExtra(EXTRA_QR, qrData)

@@ -36,6 +36,8 @@
             android:exported="true"/>
         <activity android:name=".presentation.screens.main.account.history.HistoryActivity"
             android:exported="true"/>
+        <activity android:name=".presentation.screens.promo.PromoActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

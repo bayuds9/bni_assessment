@@ -18,7 +18,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import id.flowerencee.qrpaymentapp.R
-import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoListResponseItem
+import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoItem
 import id.flowerencee.qrpaymentapp.databinding.ItemPromoBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutPromoBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
@@ -30,13 +30,13 @@ class PromoView : ConstraintLayout {
         private val TAG = PromoView::class.java.simpleName
 
         class AdapterPromo(
-            private val listener: (PromoListResponseItem) -> Unit
+            private val listener: (PromoItem) -> Unit
         ) : RecyclerView.Adapter<AdapterPromo.ViewHolder>() {
-            private val data = ArrayList<PromoListResponseItem>()
+            private val data = ArrayList<PromoItem>()
             private var loading = true
 
             inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-                fun bind(item: PromoListResponseItem) = with(itemView) {
+                fun bind(item: PromoItem) = with(itemView) {
                     val bindData = ItemPromoBinding.bind(this)
                     item.img?.let { img ->
                         img.formats?.let {
@@ -103,7 +103,7 @@ class PromoView : ConstraintLayout {
                 }
             }
 
-            fun setData(list: ArrayList<PromoListResponseItem>, load: Boolean = false) {
+            fun setData(list: ArrayList<PromoItem>, load: Boolean = false) {
                 loading = load
                 val cbDiff = PromoCallback(data, list)
                 val resultDiff = DiffUtil.calculateDiff(cbDiff)
@@ -113,8 +113,8 @@ class PromoView : ConstraintLayout {
             }
 
             inner class PromoCallback(
-                private val oldList: ArrayList<PromoListResponseItem>,
-                private val newList: ArrayList<PromoListResponseItem>
+                private val oldList: ArrayList<PromoItem>,
+                private val newList: ArrayList<PromoItem>
             ) : DiffUtil.Callback() {
                 override fun getOldListSize(): Int = oldList.size
 
@@ -190,15 +190,15 @@ class PromoView : ConstraintLayout {
     }
 
     fun setLoading() {
-        val list = ArrayList<PromoListResponseItem>()
+        val list = ArrayList<PromoItem>()
         repeat(5) {
-            list.add(PromoListResponseItem())
+            list.add(PromoItem())
         }
-        arrayListOf(PromoListResponseItem())
+        arrayListOf(PromoItem())
         promoAdapter?.setData(list, true)
     }
 
-    fun setData(list: ArrayList<PromoListResponseItem>) {
+    fun setData(list: ArrayList<PromoItem>) {
         DeLog.d(TAG, list.toString())
         when(list.isEmpty()){
             true -> binding.promoRecords.root.toSHow()
@@ -212,6 +212,6 @@ class PromoView : ConstraintLayout {
     }
 
     interface PromoListener {
-        fun onClickPromo(item: PromoListResponseItem) {}
+        fun onClickPromo(item: PromoItem) {}
     }
 }

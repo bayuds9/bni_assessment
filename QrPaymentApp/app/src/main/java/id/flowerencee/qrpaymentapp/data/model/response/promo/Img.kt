@@ -1,8 +1,11 @@
 package id.flowerencee.qrpaymentapp.data.model.response.promo
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Img(
     @SerializedName("alternativeText")
     var alternativeText: String? = null,
@@ -25,11 +28,11 @@ data class Img(
     @SerializedName("name")
     var name: String? = null,
     @SerializedName("previewUrl")
-    var previewUrl: Any? = null,
+    var previewUrl: String? = null,
     @SerializedName("provider")
     var provider: String? = null,
     @SerializedName("provider_metadata")
-    var providerMetadata: Any? = null,
+    var providerMetadata: String? = null,
     @SerializedName("size")
     var size: Double? = null,
     @SerializedName("updated_at")
@@ -38,4 +41,4 @@ data class Img(
     var url: String? = null,
     @SerializedName("width")
     var width: Int? = null
-)
+) : Parcelable
