@@ -34,7 +34,12 @@ class PromoDataSourceImpl(
                 raw.let {
                     try {
                         when (it.status.isSuccess()) {
-                            true -> response = it.body<List<PromoItem>>()
+                            true -> {
+                                response = it.body<List<PromoItem>>()
+                                withContext(Dispatchers.Main){
+                                    status = flowOf(StatusResponse(success = true))
+                                }
+                            }
                             else -> withContext(Dispatchers.Main) {
                                 status = flowOf(MappingFailedResponse().mappingFailedResponse(it))
                             }

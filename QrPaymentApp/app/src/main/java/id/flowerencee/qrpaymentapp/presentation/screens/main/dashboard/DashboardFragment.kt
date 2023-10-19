@@ -17,7 +17,6 @@ import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.Rece
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PromoView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.TransactionView
-import id.flowerencee.qrpaymentapp.presentation.shared.custom.showPopup
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
@@ -75,21 +74,21 @@ class DashboardFragment : Fragment() {
     }
 
     private fun requestPromo() {
-        viewModel.getAllPromo().observe(viewLifecycleOwner){
+        viewModel.getAllPromo().observe(viewLifecycleOwner) {
             DeLog.d(TAG, "response $it")
             binding.viewPromo.setData(ArrayList(it))
         }
-        viewModel.getStatus().observe(viewLifecycleOwner){
+        viewModel.getStatus().observe(viewLifecycleOwner) {
             DeLog.d(TAG, "status response ${it}")
             if (it != null) {
                 binding.viewPromo.setData(arrayListOf())
             }
-            showInvalidAction(it)
+            if (!it.success) showInvalidAction(it)
         }
     }
 
     private fun showInvalidAction(statusResponse: StatusResponse?) {
-        if (isAdded){
+        if (isAdded) {
             val listener = object : PopUpInterface {
                 override fun onPositive() {
                     requestPromo()
@@ -103,7 +102,7 @@ class DashboardFragment : Fragment() {
         val promoListener = object : PromoView.PromoListener {
             override fun onClickPromo(item: PromoItem) {
                 DeLog.d(TAG, "promo clicked $item")
-                with((activity as MainActivity)){
+                with((activity as MainActivity)) {
                     activityLauncher.launch(PromoActivity.myIntent(this, item))
                 }
             }
