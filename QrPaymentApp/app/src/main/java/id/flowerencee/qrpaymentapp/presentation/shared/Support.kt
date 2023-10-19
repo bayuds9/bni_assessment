@@ -24,16 +24,14 @@ fun Context.getColors(index: Int): Int {
         R.color.customColor1Light,
         R.color.customColor2Light,
         R.color.customColor3Light,
-        R.color.customColor4Light,
-        R.color.customColor5Light
+        R.color.customColor4Light
     )
 
     val customColorsDark = listOf(
         R.color.customColor1Dark,
         R.color.customColor2Dark,
         R.color.customColor3Dark,
-        R.color.customColor4Dark,
-        R.color.customColor5Dark
+        R.color.customColor4Dark
     )
     return getThemeBasedColor(this, customColorsLight, customColorsDark, index)
 }

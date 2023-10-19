@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
+import id.flowerencee.qrpaymentapp.data.model.response.portfolio.DoughnutData
 import id.flowerencee.qrpaymentapp.databinding.FragmentCartBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.CartView
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
+import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CartFragment : Fragment() {
     companion object {
         private val TAG = CartFragment::class.java.simpleName
-        fun newInstance() : CartFragment {
+        fun newInstance(): CartFragment {
             val fragment = CartFragment()
             val bundle = Bundle()
             fragment.arguments = bundle
@@ -24,7 +27,7 @@ class CartFragment : Fragment() {
 
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : CartViewModel by viewModel()
+    private val viewModel: CartViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,7 +36,7 @@ class CartFragment : Fragment() {
         _binding = FragmentCartBinding.bind(
             inflater.inflate(R.layout.fragment_cart, container, false)
         )
-        return binding?.root
+        return binding.root
     }
 
     override fun onDestroy() {
@@ -48,22 +51,43 @@ class CartFragment : Fragment() {
     }
 
     private fun initData() {
-        viewModel.getPortfolio().observe(viewLifecycleOwner){portfolio ->
+        viewModel.getPortfolio().observe(viewLifecycleOwner) { portfolio ->
             DeLog.d(TAG, "data $portfolio")
-            portfolio.firstOrNull { it.type == "donutChart" }?.let {doughnut ->
+            portfolio.firstOrNull { it.type == "donutChart" }?.let { doughnut ->
                 doughnut.doughnut.forEach {
                     DeLog.d(TAG, "data doughnut $it")
                 }
                 binding.viewCart.setData(doughnut.doughnut, doughnut.type ?: "")
             }
         }
+        viewModel.cartDetail.observe(viewLifecycleOwner) {
+            binding.viewText.setData(it)
+        }
     }
 
     private fun initUi() {
         val listener = object : CartView.CartListener {
-
+            override fun onClickedDoughnut(cart: DoughnutData?) {
+                openDetail(cart)
+            }
         }
         binding.viewCart.setListener(listener)
+    }
+
+    private fun openDetail(cart: DoughnutData?) {
+        when (cart != null) {
+            true -> {
+                binding.viewText.apply {
+                    setHeader(cart.label.toString())
+                    toSHow()
+                }
+                viewModel.generateCartDetail(cart)
+            }
+
+            false -> {
+                binding.viewText.toHide()
+            }
+        }
     }
 
 }

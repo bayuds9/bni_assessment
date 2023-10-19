@@ -71,9 +71,6 @@
     <color name="customColor3Light">#4F64A8</color>
     <color name="customColor3Dark">#3F5084</color>
 
-    <color name="customColor4Light">#FFD700</color>
-    <color name="customColor4Dark">#E6C200</color>
-
-    <color name="customColor5Light">#FFA500</color>
-    <color name="customColor5Dark">#E68A00</color>
+    <color name="customColor4Light">#FFA500</color>
+    <color name="customColor4Dark">#E68A00</color>
 </resources>

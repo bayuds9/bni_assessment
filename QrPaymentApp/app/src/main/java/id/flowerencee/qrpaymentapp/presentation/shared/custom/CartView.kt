@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -18,15 +16,16 @@ import id.flowerencee.qrpaymentapp.databinding.LayoutDoughnutCartBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.roundToFloat
 import id.flowerencee.qrpaymentapp.presentation.shared.getColorAttribute
 import id.flowerencee.qrpaymentapp.presentation.shared.getColors
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 
 class CartView : ConstraintLayout {
     companion object {
         private val TAG = CartView::class.java.simpleName
     }
+
     private lateinit var mContext: Context
     private lateinit var binding: LayoutDoughnutCartBinding
     private var listener: CartListener? = null
+    private val listData = ArrayList<DoughnutData>()
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -55,13 +54,13 @@ class CartView : ConstraintLayout {
 
     private val cartListener = object : OnChartValueSelectedListener {
         override fun onValueSelected(e: Entry?, h: Highlight?) {
-            DeLog.d(TAG, "selected entry $e")
-            DeLog.d(TAG, "selected entry ${e?.data}")
-            DeLog.d(TAG, "Highlight $h")
+            listData.firstOrNull { it.label?.equals(e?.data.toString(), true) == true }?.let {
+                listener?.onClickedDoughnut(it)
+            }
         }
 
         override fun onNothingSelected() {
-
+            listener?.onClickedDoughnut(null)
         }
 
     }
@@ -71,16 +70,18 @@ class CartView : ConstraintLayout {
             animateXY(1000, 1000)
             setTouchEnabled(true)
             setDrawEntryLabels(true)
-            setEntryLabelTextSize(8f)
+            setEntryLabelTextSize(12f)
             setHoleColor(context.getColorAttribute(com.google.android.material.R.attr.colorSurface))
             legend.isEnabled = false
             description.isEnabled = false
-            holeRadius = 50f
-            transparentCircleRadius = 2f
+            holeRadius = 40f
+            transparentCircleRadius = 0f
         }
     }
 
     fun setData(list: ArrayList<DoughnutData>, label: String) {
+        listData.clear()
+        listData.addAll(list)
         binding.tvLabel.text = label
         val pieData = PieData()
         val entries = ArrayList<PieEntry>()
@@ -89,7 +90,8 @@ class CartView : ConstraintLayout {
             entries.add(
                 PieEntry(
                     doughnutData.percentage.roundToFloat(),
-                    doughnutData.label.toString()
+                    doughnutData.label.toString(),
+                    doughnutData.label
                 )
             )
             colorList.add(context.getColors(index))
@@ -116,6 +118,6 @@ class CartView : ConstraintLayout {
     }
 
     interface CartListener {
-        fun onItemCLicked(cart: PieChart) {}
+        fun onClickedDoughnut(cart: DoughnutData?) {}
     }
 }

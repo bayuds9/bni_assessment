@@ -16,6 +16,11 @@ object Constant {
             const val READ_TIME_OUT = 60L
             const val CONNECTION_TIME_OUT = 60L
             const val CALL_TIME_OUT = 60L
+
+            const val DOUGHNUT_CHART = "donutChart"
+            const val LINE_CHART = "lineChart"
+            const val DATA = "data"
+            const val TYPE = "type"
         }
     }
 }
