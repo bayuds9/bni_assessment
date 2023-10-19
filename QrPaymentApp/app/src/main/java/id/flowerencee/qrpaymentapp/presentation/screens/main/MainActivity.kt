@@ -68,7 +68,9 @@ class MainActivity : BaseActivity() {
                 R.id.menu_account -> setCurrentFragment(openAccount())
                 R.id.menu_scann -> setCurrentFragment(openScanner())
                 R.id.menu_cashflow -> setCurrentFragment(openCart())
-                /*R.id.menu_setting -> setCurrentFragment(setting)*/
+                R.id.menu_about -> {
+                    throw RuntimeException("Test Crash")
+                }
             }
             return@setOnItemSelectedListener true
         }
