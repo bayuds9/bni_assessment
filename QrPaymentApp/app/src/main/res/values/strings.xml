@@ -2,7 +2,7 @@
     <string name="app_name">Qr Payment App</string>
     <string name="add_account">Add Account</string>
     <string name="flash_control">flash control</string>
-
+    <string name="default_notification_channel_id">12321</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_account">Account</string>

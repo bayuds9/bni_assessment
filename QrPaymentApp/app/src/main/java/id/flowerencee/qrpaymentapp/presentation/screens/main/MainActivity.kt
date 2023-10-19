@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.messaging.FirebaseMessaging
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ActivityMainBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountFragment
@@ -17,11 +18,13 @@ import id.flowerencee.qrpaymentapp.presentation.shared.custom.showPopup
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.animatedTransaction
 import id.flowerencee.qrpaymentapp.presentation.shared.`object`.DialogData
 import id.flowerencee.qrpaymentapp.presentation.shared.support.BaseActivity
+import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
 
     companion object {
+        private val TAG = MainActivity::class.java.simpleName
         private val REQUIRED_PERMISSIONS =
             arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
@@ -38,6 +41,16 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
         validatePermission()
         initUi()
+        initFirebaseInstallation()
+    }
+
+    private fun initFirebaseInstallation() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val firebaseMessagingToken = task.result ?: ""
+                DeLog.d(TAG, "initInstallationId-FirebaseMessaging : $firebaseMessagingToken")
+            }
+        }
     }
 
     override fun onBackPressed() {
