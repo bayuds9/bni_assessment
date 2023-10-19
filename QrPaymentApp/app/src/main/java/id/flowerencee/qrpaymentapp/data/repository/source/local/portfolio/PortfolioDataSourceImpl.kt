@@ -6,7 +6,9 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import id.flowerencee.qrpaymentapp.R
+import id.flowerencee.qrpaymentapp.data.model.Constant
 import id.flowerencee.qrpaymentapp.data.model.response.portfolio.DoughnutData
+import id.flowerencee.qrpaymentapp.data.model.response.portfolio.LineCart
 import id.flowerencee.qrpaymentapp.data.model.response.portfolio.PortfolioItem
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import kotlinx.coroutines.flow.Flow
@@ -26,30 +28,37 @@ class PortfolioDataSourceImpl(
         val gson = Gson()
         val listType = object : TypeToken<List<JsonObject>>() {}.type
         val elements: List<JsonObject> = gson.fromJson(jsonContent, listType)
-        for (element in elements) {
-            when (val type = element.get("type").asString) {
-                "donutChart" -> {
-                    val raw = gson.fromJson(element.getAsJsonArray("data"), JsonArray::class.java)
-                    val doughnut = ArrayList<DoughnutData>()
-                    raw.forEach {
-                        val gsonData = Gson()
-                        val result = gsonData.fromJson(it, DoughnutData::class.java)
-                        doughnut.add(result)
-                    }
-                    resultList.add(PortfolioItem(type, doughnut))
+        elements.forEach { element ->
+            when (val type = element.get(Constant.PARAM.TYPE).asString) {
+                Constant.PARAM.DOUGHNUT_CHART -> {
+                    val result : PortfolioItem = processDoughnutCart(gson, type, element)
+                    resultList.add(result)
                 }
 
-                "lineChart" -> {
-                    val data = element.getAsJsonObject("data")
-                    resultList.add(PortfolioItem(type, lineCart = data))
+                Constant.PARAM.LINE_CHART -> {
+                    val result : PortfolioItem = processLineCart(gson, type, element)
+                    resultList.add(result)
                 }
-
-                else -> {
-
-                }
+                else -> {}
             }
         }
         DeLog.d(TAG, "result $resultList")
         return flowOf(resultList)
+    }
+
+    private fun processLineCart(gson: Gson, type: String, element: JsonObject): PortfolioItem {
+        val raw = gson.fromJson(element.getAsJsonObject(Constant.PARAM.DATA), JsonObject::class.java)
+        val result = gson.fromJson(raw, LineCart::class.java)
+        return PortfolioItem(type, lineCart = result)
+    }
+
+    private fun processDoughnutCart(gson: Gson, type: String, element: JsonObject): PortfolioItem {
+        val raw = gson.fromJson(element.getAsJsonArray(Constant.PARAM.DATA), JsonArray::class.java)
+        val doughnut = ArrayList<DoughnutData>()
+        raw.forEach {
+            val result = gson.fromJson(it, DoughnutData::class.java)
+            doughnut.add(result)
+        }
+        return PortfolioItem(type, doughnut)
     }
 }
