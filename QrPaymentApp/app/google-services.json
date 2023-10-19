@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "721237609109",
+    "project_id": "rich-jigsaw-373907",
+    "storage_bucket": "rich-jigsaw-373907.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721237609109:android:bce45743d7f0819e99299c",
+        "android_client_info": {
+          "package_name": "id.flowerencee.qrpaymentapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101752448967423432341",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATKNBnfgPVrEeOhFvD5M6voj-gp6L2N2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101752448967423432341",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
