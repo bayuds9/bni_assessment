@@ -61,4 +61,19 @@
     <color name="md_theme_dark_surfaceTint">#D0BCFF</color>
     <color name="md_theme_dark_outlineVariant">#49454F</color>
     <color name="md_theme_dark_scrim">#000000</color>
+
+    <color name="customColor1Light">#FF5733</color>
+    <color name="customColor1Dark">#D94627</color>
+
+    <color name="customColor2Light">#2DA355</color>
+    <color name="customColor2Dark">#238B46</color>
+
+    <color name="customColor3Light">#4F64A8</color>
+    <color name="customColor3Dark">#3F5084</color>
+
+    <color name="customColor4Light">#FFD700</color>
+    <color name="customColor4Dark">#E6C200</color>
+
+    <color name="customColor5Light">#FFA500</color>
+    <color name="customColor5Dark">#E68A00</color>
 </resources>

@@ -4,6 +4,7 @@ import org.json.JSONObject
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
+import kotlin.math.roundToLong
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
@@ -57,5 +58,18 @@ fun isJsonObject(str: String): Boolean {
         true
     } catch (e: Exception) {
         false
+    }
+}
+
+fun String?.roundToFloat(): Float {
+    return try {
+        if (!this.isNullOrEmpty()) this.toDouble().roundToLong().toFloat()
+        else 0f
+    } catch (e: NumberFormatException) {
+        e.printStackTrace()
+        0f
+    } catch (e: Exception) {
+        e.printStackTrace()
+        0f
     }
 }

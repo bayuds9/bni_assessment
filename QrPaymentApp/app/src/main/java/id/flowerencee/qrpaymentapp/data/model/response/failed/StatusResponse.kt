@@ -9,5 +9,6 @@ data class StatusResponse(
     @SerializedName("message")
     var message: String? = null,
     @SerializedName("statusCode")
-    var statusCode: Int? = null
+    var statusCode: Int? = null,
+    var success: Boolean = false
 )

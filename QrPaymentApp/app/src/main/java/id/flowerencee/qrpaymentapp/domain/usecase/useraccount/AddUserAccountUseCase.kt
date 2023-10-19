@@ -9,7 +9,6 @@ class AddUserAccountUseCase(
 ) {
     suspend fun execute(userAccount: UserAccount): Long {
         val validateAccount = userAccountRepository.getAccountByNumber(userAccount.accountNumber!!)
-        DeLog.d("haha", "validate account $validateAccount")
         return when(validateAccount == null) {
             true -> userAccountRepository.addUserAccount(userAccount)
             else -> 0

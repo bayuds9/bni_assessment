@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.AddUserAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCase
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,7 +26,6 @@ class AccountViewModel(
 
     fun createAccount(account: UserAccount) = viewModelScope.launch(Dispatchers.IO) {
         val rowId = addUserAccountUseCase.execute(account)
-        DeLog.d("haha", "row id $rowId")
         withContext(Dispatchers.Main) {
             _success.value = rowId > 0
         }

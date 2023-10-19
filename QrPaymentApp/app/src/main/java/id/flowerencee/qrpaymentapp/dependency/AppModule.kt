@@ -1,19 +1,24 @@
 package id.flowerencee.qrpaymentapp.dependency
 
 import android.content.Context
+import android.content.res.Resources
 import id.flowerencee.qrpaymentapp.data.database.QrPayDatabase
 import id.flowerencee.qrpaymentapp.data.database.dao.TransactionDao
 import id.flowerencee.qrpaymentapp.data.database.dao.UserAccountDao
 import id.flowerencee.qrpaymentapp.data.networking.KtorService
+import id.flowerencee.qrpaymentapp.data.repository.implementation.portfolio.PortfolioRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.promo.PromoRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.transaction.TransactionRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.useraccount.UserAccountRepositoryImpl
+import id.flowerencee.qrpaymentapp.data.repository.source.local.portfolio.PortfolioDataSourceImpl
 import id.flowerencee.qrpaymentapp.data.repository.source.local.transaction.TransactionDataSourceImpl
 import id.flowerencee.qrpaymentapp.data.repository.source.local.useraccount.UserAccountDataSourceImpl
 import id.flowerencee.qrpaymentapp.data.repository.source.remote.promo.PromoDataSourceImpl
+import id.flowerencee.qrpaymentapp.domain.repository.portfolio.PortfolioRepository
 import id.flowerencee.qrpaymentapp.domain.repository.promo.PromoRepository
 import id.flowerencee.qrpaymentapp.domain.repository.transaction.TransactionRepository
 import id.flowerencee.qrpaymentapp.domain.repository.useraccount.UserAccountRepository
+import id.flowerencee.qrpaymentapp.domain.usecase.portfolio.GetPortfolioUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.promo.GetAllPromoUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.AddTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionFromAccountIdUseCase
@@ -28,6 +33,7 @@ import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.TopUpAccountBalanc
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.UpdateAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryViewModel
+import id.flowerencee.qrpaymentapp.presentation.screens.main.cart.CartViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.promo.PromoViewModel
@@ -77,9 +83,14 @@ val dataSourceModule = module {
         return PromoDataSourceImpl(ktorService)
     }
 
+    fun providePortfolioDataSource(resources: Resources): PortfolioDataSourceImpl {
+        return PortfolioDataSourceImpl(resources)
+    }
+
     single { provideUserAccountDataSource(get()) }
     single { provideTransactionDataSource(get()) }
     single { providePromoDataSource(get()) }
+    single { providePortfolioDataSource(androidContext().resources) }
 
 }
 
@@ -96,9 +107,14 @@ val repositoryModule = module {
         return PromoRepositoryImpl(source)
     }
 
+    fun providePortfolioRepositoryImpl(source: PortfolioDataSourceImpl): PortfolioRepository {
+        return PortfolioRepositoryImpl(source)
+    }
+
     single { provideUserAccountRepositoryImpl(get()) }
     single { provideTransactionRepositoryImpl(get()) }
     single { providePromoRepositoryImpl(get()) }
+    single { providePortfolioRepositoryImpl(get()) }
 }
 
 val accountUseCaseModule = module {
@@ -175,10 +191,18 @@ val promoUseCaseModule = module {
     single { provideGetAllPromoUseCase(get()) }
 }
 
+val portfolioUseCaseModule = module {
+    fun provideGetPortfolioUseCase(portfolioRepository: PortfolioRepository): GetPortfolioUseCase {
+        return GetPortfolioUseCase(portfolioRepository)
+    }
+    single { provideGetPortfolioUseCase(get()) }
+}
+
 val viewModelModule = module {
     viewModel { DashboardViewModel(get(), get()) }
     viewModel { AccountViewModel(get(), get()) }
     viewModel { ScannerViewModel() }
+    viewModel { CartViewModel(get()) }
     viewModel { InquiryViewModel(get(), get(), get()) }
     viewModel { ReceiptViewModel(get(), get()) }
     viewModel { HistoryViewModel(get(), get()) }

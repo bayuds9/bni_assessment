@@ -16,7 +16,6 @@ import id.flowerencee.qrpaymentapp.presentation.shared.custom.AccountView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.showChallengePopup
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.showCreateAccountPopup
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AccountFragment : Fragment() {
@@ -58,7 +57,6 @@ class AccountFragment : Fragment() {
 
     private fun initData() {
         viewModel.getAllAccount().observe(viewLifecycleOwner) {
-            DeLog.d("haha", "row id $it")
             binding.accountView.setData(ArrayList(it))
         }
         viewModel.success.observe(viewLifecycleOwner) {
@@ -78,7 +76,7 @@ class AccountFragment : Fragment() {
         val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val listener = object : AccountView.AccountListener {
             override fun onClick(account: UserAccount?) {
-                with((activity as MainActivity)){
+                with((activity as MainActivity)) {
                     activityLauncher.launch(HistoryActivity.myIntent(this, account?.id))
                 }
             }

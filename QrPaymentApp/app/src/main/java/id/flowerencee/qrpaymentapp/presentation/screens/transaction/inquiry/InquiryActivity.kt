@@ -18,7 +18,6 @@ import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.`object`.DialogData
 import id.flowerencee.qrpaymentapp.presentation.shared.support.BaseActivity
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class InquiryActivity : BaseActivity() {
@@ -109,7 +108,6 @@ class InquiryActivity : BaseActivity() {
             setListener(object : InputView.InputTextListener {
                 override fun afterTextChanged(textValue: String?) {
                     validateButton()
-                    DeLog.d("HAHA", "text $textValue")
                 }
             })
         }
@@ -120,7 +118,6 @@ class InquiryActivity : BaseActivity() {
             setListener(object : InputView.InputTextListener {
                 override fun afterTextChanged(textValue: String?) {
                     validateButton()
-                    DeLog.d("HAHA", "text $textValue")
                 }
             })
         }
