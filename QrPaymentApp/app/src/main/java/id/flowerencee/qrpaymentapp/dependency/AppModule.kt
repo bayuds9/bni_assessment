@@ -33,7 +33,7 @@ import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.TopUpAccountBalanc
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.UpdateAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.history.HistoryViewModel
-import id.flowerencee.qrpaymentapp.presentation.screens.main.cart.CartViewModel
+import id.flowerencee.qrpaymentapp.presentation.screens.main.chart.ChartViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.promo.PromoViewModel
@@ -202,7 +202,7 @@ val viewModelModule = module {
     viewModel { DashboardViewModel(get(), get()) }
     viewModel { AccountViewModel(get(), get()) }
     viewModel { ScannerViewModel() }
-    viewModel { CartViewModel(get()) }
+    viewModel { ChartViewModel(get()) }
     viewModel { InquiryViewModel(get(), get(), get()) }
     viewModel { ReceiptViewModel(get(), get()) }
     viewModel { HistoryViewModel(get(), get()) }

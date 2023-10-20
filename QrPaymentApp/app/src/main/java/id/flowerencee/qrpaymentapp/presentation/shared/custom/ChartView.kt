@@ -12,19 +12,19 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.response.portfolio.DoughnutData
-import id.flowerencee.qrpaymentapp.databinding.LayoutDoughnutCartBinding
+import id.flowerencee.qrpaymentapp.databinding.LayoutDoughnutChartBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.roundToFloat
 import id.flowerencee.qrpaymentapp.presentation.shared.getColorAttribute
 import id.flowerencee.qrpaymentapp.presentation.shared.getColors
 
-class CartView : ConstraintLayout {
+class ChartView : ConstraintLayout {
     companion object {
-        private val TAG = CartView::class.java.simpleName
+        private val TAG = ChartView::class.java.simpleName
     }
 
     private lateinit var mContext: Context
-    private lateinit var binding: LayoutDoughnutCartBinding
-    private var listener: CartListener? = null
+    private lateinit var binding: LayoutDoughnutChartBinding
+    private var listener: ChartListener? = null
     private val listData = ArrayList<DoughnutData>()
 
     constructor(context: Context) : super(context) {
@@ -45,11 +45,11 @@ class CartView : ConstraintLayout {
 
     private fun init(context: Context, attributeSet: AttributeSet? = null) {
         mContext = context
-        binding = LayoutDoughnutCartBinding.bind(
+        binding = LayoutDoughnutChartBinding.bind(
             LayoutInflater.from(mContext)
-                .inflate(R.layout.layout_doughnut_cart, this, true)
+                .inflate(R.layout.layout_doughnut_chart, this, true)
         )
-        initCart()
+        initChart()
     }
 
     private val cartListener = object : OnChartValueSelectedListener {
@@ -65,7 +65,7 @@ class CartView : ConstraintLayout {
 
     }
 
-    private fun initCart() {
+    private fun initChart() {
         binding.viewCart.apply {
             animateXY(1000, 1000)
             setTouchEnabled(true)
@@ -113,11 +113,11 @@ class CartView : ConstraintLayout {
     }
 
 
-    fun setListener(cartListener: CartListener) {
-        listener = cartListener
+    fun setListener(chartListener: ChartListener) {
+        listener = chartListener
     }
 
-    interface CartListener {
-        fun onClickedDoughnut(cart: DoughnutData?) {}
+    interface ChartListener {
+        fun onClickedDoughnut(chart: DoughnutData?) {}
     }
 }

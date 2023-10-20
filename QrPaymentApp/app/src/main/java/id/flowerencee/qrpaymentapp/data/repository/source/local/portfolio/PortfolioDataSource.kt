@@ -4,6 +4,6 @@ import id.flowerencee.qrpaymentapp.data.model.response.portfolio.PortfolioItem
 import kotlinx.coroutines.flow.Flow
 
 interface PortfolioDataSource {
-    suspend fun getCartData(): Flow<ArrayList<PortfolioItem>>
+    suspend fun getChartData(): Flow<ArrayList<PortfolioItem>>
 
 }

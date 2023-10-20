@@ -9,6 +9,6 @@ class PortfolioRepositoryImpl(
     private val portfolioDataSourceImpl: PortfolioDataSourceImpl
 ) : PortfolioRepository {
     override suspend fun getPortfolio(): Flow<ArrayList<PortfolioItem>> {
-        return portfolioDataSourceImpl.getCartData()
+        return portfolioDataSourceImpl.getChartData()
     }
 }

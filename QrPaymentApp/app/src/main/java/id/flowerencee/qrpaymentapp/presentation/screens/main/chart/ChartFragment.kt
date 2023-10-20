@@ -1,4 +1,4 @@
-package id.flowerencee.qrpaymentapp.presentation.screens.main.cart
+package id.flowerencee.qrpaymentapp.presentation.screens.main.chart
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,34 +7,34 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.response.portfolio.DoughnutData
-import id.flowerencee.qrpaymentapp.databinding.FragmentCartBinding
-import id.flowerencee.qrpaymentapp.presentation.shared.custom.CartView
+import id.flowerencee.qrpaymentapp.databinding.FragmentChartBinding
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.ChartView
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toHide
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.toSHow
 import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CartFragment : Fragment() {
+class ChartFragment : Fragment() {
     companion object {
-        private val TAG = CartFragment::class.java.simpleName
-        fun newInstance(): CartFragment {
-            val fragment = CartFragment()
+        private val TAG = ChartFragment::class.java.simpleName
+        fun newInstance(): ChartFragment {
+            val fragment = ChartFragment()
             val bundle = Bundle()
             fragment.arguments = bundle
             return fragment
         }
     }
 
-    private var _binding: FragmentCartBinding? = null
+    private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: CartViewModel by viewModel()
+    private val viewModel: ChartViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCartBinding.bind(
-            inflater.inflate(R.layout.fragment_cart, container, false)
+        _binding = FragmentChartBinding.bind(
+            inflater.inflate(R.layout.fragment_chart, container, false)
         )
         return binding.root
     }
@@ -60,28 +60,28 @@ class CartFragment : Fragment() {
                 binding.viewCart.setData(doughnut.doughnut, doughnut.type ?: "")
             }
         }
-        viewModel.cartDetail.observe(viewLifecycleOwner) {
+        viewModel.chartDetail.observe(viewLifecycleOwner) {
             binding.viewText.setData(it)
         }
     }
 
     private fun initUi() {
-        val listener = object : CartView.CartListener {
-            override fun onClickedDoughnut(cart: DoughnutData?) {
-                openDetail(cart)
+        val listener = object : ChartView.ChartListener {
+            override fun onClickedDoughnut(chart: DoughnutData?) {
+                openDetail(chart)
             }
         }
         binding.viewCart.setListener(listener)
     }
 
-    private fun openDetail(cart: DoughnutData?) {
-        when (cart != null) {
+    private fun openDetail(chart: DoughnutData?) {
+        when (chart != null) {
             true -> {
                 binding.viewText.apply {
-                    setHeader(cart.label.toString())
+                    setHeader(chart.label.toString())
                     toSHow()
                 }
-                viewModel.generateCartDetail(cart)
+                viewModel.generateChartDetail(chart)
             }
 
             false -> {

@@ -1,4 +1,4 @@
-package id.flowerencee.qrpaymentapp.presentation.screens.main.cart
+package id.flowerencee.qrpaymentapp.presentation.screens.main.chart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,12 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CartViewModel(
+class ChartViewModel(
     private val getPortfolioUseCase: GetPortfolioUseCase
 ) : ViewModel() {
 
     private var _chartDetail = MutableLiveData<ArrayList<TextLabel>>()
-    val cartDetail: LiveData<ArrayList<TextLabel>> get() = _chartDetail
+    val chartDetail: LiveData<ArrayList<TextLabel>> get() = _chartDetail
 
     fun getPortfolio() = liveData {
         getPortfolioUseCase.execute().collect() {
@@ -26,12 +26,12 @@ class CartViewModel(
         }
     }
 
-    fun generateCartDetail(cart: DoughnutData?) {
+    fun generateChartDetail(chart: DoughnutData?) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (cart != null) {
+            when (chart != null) {
                 true -> {
                     val result = ArrayList<TextLabel>()
-                    cart.data?.onEachIndexed { index, doughnut ->
+                    chart.data?.onEachIndexed { index, doughnut ->
                         val data = TextLabel(
                             index,
                             doughnut.trxDate.toString(),

@@ -10,7 +10,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ActivityMainBinding
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountFragment
-import id.flowerencee.qrpaymentapp.presentation.screens.main.cart.CartFragment
+import id.flowerencee.qrpaymentapp.presentation.screens.main.chart.ChartFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerFragment
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
@@ -33,7 +33,7 @@ class MainActivity : BaseActivity() {
     private var dashboardFragment: DashboardFragment? = null
     private var accountFragment: AccountFragment? = null
     private var scannerFragment: ScannerFragment? = null
-    private var cartFragment: CartFragment? = null
+    private var chartFragment: ChartFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +80,7 @@ class MainActivity : BaseActivity() {
                 R.id.menu_dashboard -> setCurrentFragment(openDashboard())
                 R.id.menu_account -> setCurrentFragment(openAccount())
                 R.id.menu_scann -> setCurrentFragment(openScanner())
-                R.id.menu_cashflow -> setCurrentFragment(openCart())
+                R.id.menu_cashflow -> setCurrentFragment(openChart())
                 R.id.menu_about -> {
                     throw RuntimeException("Test Crash")
                 }
@@ -104,9 +104,9 @@ class MainActivity : BaseActivity() {
         return scannerFragment as ScannerFragment
     }
 
-    private fun openCart(): CartFragment {
-        if (cartFragment == null) cartFragment = CartFragment.newInstance()
-        return cartFragment as CartFragment
+    private fun openChart(): ChartFragment {
+        if (chartFragment == null) chartFragment = ChartFragment.newInstance()
+        return chartFragment as ChartFragment
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
