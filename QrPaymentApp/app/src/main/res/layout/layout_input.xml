@@ -32,7 +32,6 @@
         android:layout_marginHorizontal="16dp"
         android:visibility="gone"
         android:focusable="false"
-        android:preferKeepClear="true"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputLabel"
