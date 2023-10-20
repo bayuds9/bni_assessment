@@ -79,7 +79,7 @@ class DashboardFragment : Fragment() {
             binding.viewPromo.setData(ArrayList(it))
         }
         viewModel.getStatus().observe(viewLifecycleOwner) {
-            DeLog.d(TAG, "status response ${it}")
+            DeLog.d(TAG, "status response $it")
             if (it != null) {
                 binding.viewPromo.setData(arrayListOf())
             }

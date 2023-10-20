@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionFromAccountIdUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetAllTransactionUseCase
-import kotlinx.coroutines.flow.collect
 
 class HistoryViewModel(
     private val getAllTransactionUseCase: GetAllTransactionUseCase,

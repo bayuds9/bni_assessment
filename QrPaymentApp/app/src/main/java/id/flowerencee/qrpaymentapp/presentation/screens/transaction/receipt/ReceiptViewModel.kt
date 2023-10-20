@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
 import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
-import id.flowerencee.qrpaymentapp.dependency.viewModelModule
 import id.flowerencee.qrpaymentapp.domain.usecase.transaction.GetDetailTransactionUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency
@@ -21,15 +20,15 @@ class ReceiptViewModel(
     private val getAccountUseCase: GetAccountUseCase
 ) : ViewModel() {
     private var _transactionField = MutableLiveData<ArrayList<TextLabel>>()
-    val transactionField : LiveData<ArrayList<TextLabel>> get() = _transactionField
+    val transactionField: LiveData<ArrayList<TextLabel>> get() = _transactionField
 
     private var _transactionData = MutableLiveData<Transaction>()
-    val transactionData : LiveData<Transaction> get() = _transactionData
+    val transactionData: LiveData<Transaction> get() = _transactionData
 
     fun getTransactionData(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             getDetailTransactionUseCase.execute(id)?.let { trx ->
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     _transactionData.value = trx
                 }
                 trx.transactionSource?.let { sourceId ->
@@ -59,15 +58,16 @@ class ReceiptViewModel(
                         3 -> "Bill Amount"
                         else -> ""
                     }
-                    val value = if (index == 3 && rawValue.isDigitsOnly()) rawValue.toDouble().reformatCurrency("Rp") else rawValue
+                    val value = if (index == 3 && rawValue.isDigitsOnly()) rawValue.toDouble()
+                        .reformatCurrency("Rp") else rawValue
                     if (label.isNotEmpty()) list.add(TextLabel(index + 2, label, value))
                 }
             }
         }
         trx.transactionAmount?.let {
-            list.add(TextLabel(list.size + 1,"Paid", it.reformatCurrency("Rp")))
+            list.add(TextLabel(list.size + 1, "Paid", it.reformatCurrency("Rp")))
         }
-        withContext(Dispatchers.Main){
+        withContext(Dispatchers.Main) {
             _transactionField.value = list
         }
     }

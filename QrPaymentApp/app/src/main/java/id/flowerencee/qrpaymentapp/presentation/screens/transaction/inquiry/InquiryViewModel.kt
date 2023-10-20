@@ -1,6 +1,5 @@
 package id.flowerencee.qrpaymentapp.presentation.screens.transaction.inquiry
 
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +12,6 @@ import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAccountUseCase
 import id.flowerencee.qrpaymentapp.domain.usecase.useraccount.GetAllAccountUseCase
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency
 import id.flowerencee.qrpaymentapp.presentation.shared.`object`.TextLabel
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

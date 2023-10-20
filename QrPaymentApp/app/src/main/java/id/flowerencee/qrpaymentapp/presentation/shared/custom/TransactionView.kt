@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.data.model.entity.Transaction
-import id.flowerencee.qrpaymentapp.data.model.entity.UserAccount
 import id.flowerencee.qrpaymentapp.databinding.ItemTransactionBinding
 import id.flowerencee.qrpaymentapp.databinding.LayoutTransactionListBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency
@@ -22,18 +21,19 @@ import java.util.Date
 class TransactionView : ConstraintLayout {
     private lateinit var mContext: Context
     private lateinit var binding: LayoutTransactionListBinding
-    private var transactionAdapter : TransactionAdapter? = null
+    private var transactionAdapter: TransactionAdapter? = null
     private var listener: TransactionListener? = null
 
     companion object {
         private val TAG = TransactionView::class.java.simpleName
+
         class TransactionAdapter(
             private val listener: (Transaction) -> Unit
         ) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
             private val data = ArrayList<Transaction>()
 
-            inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-                fun bind(item: Transaction) = with(itemView){
+            inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+                fun bind(item: Transaction) = with(itemView) {
                     val bindData = ItemTransactionBinding.bind(this)
                     item.transactionAmount?.let {
                         bindData.tvTransactionAmount.text = it.reformatCurrency("Rp")
@@ -130,7 +130,7 @@ class TransactionView : ConstraintLayout {
     }
 
     private fun initAdapter() {
-        transactionAdapter = TransactionAdapter{
+        transactionAdapter = TransactionAdapter {
             listener?.onClickTransaction(it)
         }
         binding.rvItems.apply {

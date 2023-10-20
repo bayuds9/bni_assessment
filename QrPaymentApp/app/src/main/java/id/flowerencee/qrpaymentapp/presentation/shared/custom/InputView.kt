@@ -2,9 +2,7 @@ package id.flowerencee.qrpaymentapp.presentation.shared.custom
 
 import android.app.Activity
 import android.content.Context
-import android.media.tv.interactive.AppLinkInfo
 import android.text.Editable
-import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
@@ -14,14 +12,12 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.textfield.TextInputLayout
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.LayoutInputBinding
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.hideSoftKeyboard
 import id.flowerencee.qrpaymentapp.presentation.shared.extension.reformatCurrency
-import id.flowerencee.qrpaymentapp.presentation.shared.support.DeLog
 
 class InputView : ConstraintLayout {
     private lateinit var mContext: Context
@@ -45,9 +41,10 @@ class InputView : ConstraintLayout {
     }
 
     enum class TYPE { TEXT, CURRENCY, DROPDOWN, NUMBER }
+
     private var inputType = TYPE.TEXT
     private var currentCurrency = ""
-    private var activity : Activity? = null
+    private var activity: Activity? = null
 
     private fun init(context: Context, attributeSet: AttributeSet? = null) {
         mContext = context
@@ -74,8 +71,8 @@ class InputView : ConstraintLayout {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            when {
-                inputType == TYPE.CURRENCY -> {
+            when (inputType) {
+                TYPE.CURRENCY -> {
                     if (s.toString() != currentCurrency) {
                         binding.etInput.removeTextChangedListener(this)
 
@@ -102,9 +99,11 @@ class InputView : ConstraintLayout {
                         binding.etInput.addTextChangedListener(this)
                     }
                 }
-                inputType == TYPE.DROPDOWN -> {
+
+                TYPE.DROPDOWN -> {
                     activity?.hideSoftKeyboard()
                 }
+
                 else -> {}
             }
 
@@ -132,18 +131,20 @@ class InputView : ConstraintLayout {
 
     fun setType(type: TYPE, data: Any? = null) {
         inputType = type
-        when(type) {
+        when (type) {
             TYPE.TEXT -> {
                 binding.etInput.inputType = InputType.TYPE_CLASS_TEXT
             }
+
             TYPE.CURRENCY -> {
                 binding.etInput.inputType = InputType.TYPE_CLASS_NUMBER
                 binding.etInput.setText(data.toString())
                 binding.etInput.isEnabled = data == null
             }
+
             TYPE.NUMBER -> binding.etInput.inputType = InputType.TYPE_CLASS_NUMBER
             TYPE.DROPDOWN -> {
-                when(data){
+                when (data) {
                     is List<*> -> {
                         binding.inputLabel.visibility = View.GONE
                         binding.ddLabel.visibility = View.VISIBLE
@@ -166,7 +167,7 @@ class InputView : ConstraintLayout {
         binding.inputLabel.helperText = message
     }
 
-    fun getTextValue() = when(inputType){
+    fun getTextValue() = when (inputType) {
         TYPE.CURRENCY -> binding.etInput.text.toString().trim().replace(".", "")
         TYPE.DROPDOWN -> binding.actInput.text.toString()
         TYPE.NUMBER -> binding.etInput.text.toString().trim().replace("([^0-9.,])+".toRegex(), "")

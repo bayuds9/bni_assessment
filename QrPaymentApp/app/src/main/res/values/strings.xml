@@ -56,4 +56,6 @@
     <string name="no_promo_to_show">No Promo To Show</string>
     <string name="promo">Promo</string>
     <string name="illustration">Illustration</string>
+    <string name="remark_text">This application only used as example</string>
+    <string name="used_library">External Used Library For This App</string>
 </resources>

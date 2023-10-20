@@ -24,19 +24,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.handleIntent(intent)
     }
 
-    override fun onMessageReceived(message: RemoteMessage) {
-        super.onMessageReceived(message)
-    }
-
-    override fun onDeletedMessages() {
-        super.onDeletedMessages()
-    }
-
-    override fun onMessageSent(msgId: String) {
-        super.onMessageSent(msgId)
-    }
-
-    override fun onSendError(msgId: String, exception: Exception) {
-        super.onSendError(msgId, exception)
-    }
 }
