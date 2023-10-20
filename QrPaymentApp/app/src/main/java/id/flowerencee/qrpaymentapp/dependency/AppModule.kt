@@ -207,7 +207,4 @@ val viewModelModule = module {
     viewModel { ReceiptViewModel(get(), get()) }
     viewModel { HistoryViewModel(get(), get()) }
     viewModel { PromoViewModel() }
-    /*viewModel { PaymentViewModel(get(), get()) }
-    viewModel { MainViewModel() }
-    viewModel { TransactionViewModel() }*/
 }
