@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.messaging.FirebaseMessaging
 import id.flowerencee.qrpaymentapp.R
 import id.flowerencee.qrpaymentapp.databinding.ActivityMainBinding
+import id.flowerencee.qrpaymentapp.presentation.screens.main.about.AboutFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.account.AccountFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.chart.ChartFragment
 import id.flowerencee.qrpaymentapp.presentation.screens.main.dashboard.DashboardFragment
@@ -34,6 +35,7 @@ class MainActivity : BaseActivity() {
     private var accountFragment: AccountFragment? = null
     private var scannerFragment: ScannerFragment? = null
     private var chartFragment: ChartFragment? = null
+    private var aboutFragment: AboutFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,9 +83,7 @@ class MainActivity : BaseActivity() {
                 R.id.menu_account -> setCurrentFragment(openAccount())
                 R.id.menu_scann -> setCurrentFragment(openScanner())
                 R.id.menu_cashflow -> setCurrentFragment(openChart())
-                R.id.menu_about -> {
-                    throw RuntimeException("Test Crash")
-                }
+                R.id.menu_about -> setCurrentFragment(openAbout())
             }
             return@setOnItemSelectedListener true
         }
@@ -107,6 +107,11 @@ class MainActivity : BaseActivity() {
     private fun openChart(): ChartFragment {
         if (chartFragment == null) chartFragment = ChartFragment.newInstance()
         return chartFragment as ChartFragment
+    }
+
+    private fun openAbout(): AboutFragment {
+        if (aboutFragment == null) aboutFragment = AboutFragment.newInstance()
+        return aboutFragment as AboutFragment
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
