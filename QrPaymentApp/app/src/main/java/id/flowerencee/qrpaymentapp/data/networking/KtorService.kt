@@ -13,14 +13,12 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.URLProtocol
 import io.ktor.serialization.gson.gson
 import java.util.concurrent.TimeUnit
 
 interface KtorService {
-    suspend fun callGetHttp(httpRequestBuilder: HttpRequestBuilder): HttpResponse?
+    suspend fun getClient(): HttpClient
 
     companion object {
         fun create(context: Context): KtorService {

@@ -42,7 +42,7 @@ class AccountView : ConstraintLayout {
     companion object {
         private val TAG = AccountView::class.java.simpleName
 
-        class AccountAdapter(private val listener: (UserAccount) -> Unit) :
+        class AccountAdapter(private val listener: (UserAccount, Int) -> Unit) :
             RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
             val data = ArrayList<UserAccount>()
 
@@ -63,12 +63,17 @@ class AccountView : ConstraintLayout {
                             bindData.containerAccount.visibility = View.VISIBLE
                             bindData.containerEmpty.visibility = View.GONE
                         }
+
                         false -> {
                             bindData.containerAccount.visibility = View.INVISIBLE
                             bindData.containerEmpty.visibility = View.VISIBLE
                         }
                     }
-                    bindData.root.setOnClickListener { listener(item) }
+                    bindData.root.setOnClickListener { listener(item, 0) }
+                    bindData.root.setOnLongClickListener {
+                        listener(item, 1)
+                        return@setOnLongClickListener true
+                    }
                 }
 
             }
@@ -134,8 +139,8 @@ class AccountView : ConstraintLayout {
     }
 
     private fun initAdapter() {
-        accountAdapter = AccountAdapter {
-            listener?.onClick(it)
+        accountAdapter = AccountAdapter { data, longClicked ->
+            listener?.onClick(data, longClicked)
         }
         binding.rvItems.apply {
             layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
@@ -162,6 +167,6 @@ class AccountView : ConstraintLayout {
     }
 
     interface AccountListener {
-        fun onClick(account: UserAccount? = null) {}
+        fun onClick(account: UserAccount? = null, type: Int) {}
     }
 }

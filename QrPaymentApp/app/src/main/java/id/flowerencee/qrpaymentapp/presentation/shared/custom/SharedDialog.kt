@@ -80,6 +80,43 @@ fun Activity.showChallengePopup(listener: PopUpInterface) {
     if (!isFinishing) dialog.show()
 }
 
+fun Activity.showTopUpBalancePopup(listener: PopUpInterface) {
+    val data = DialogData(
+        getString(R.string.top_up_balance),
+        positive = getString(R.string.submit),
+        negative = getString(
+            R.string.cancel
+        )
+    )
+    val dialog = MaterialAlertDialogBuilder(this)
+    val binding = DialogChallengeBinding.inflate(layoutInflater)
+    binding.etAnswer.apply {
+        setType(InputView.TYPE.NUMBER)
+    }
+    dialog.setView(binding.root)
+    with(data) {
+        title?.let {
+            dialog.setTitle(it)
+        }
+        description?.let {
+            dialog.setMessage(it)
+        }
+        positive?.let {
+            dialog.setPositiveButton(it) { _, _ ->
+                val result = binding.etAnswer.getTextValue().toInt()
+                listener.onResult(result)
+            }
+        }
+        negative?.let {
+            dialog.setNegativeButton(it) { _, _ ->
+                listener.onNegative()
+            }
+        }
+    }
+
+    if (!isFinishing) dialog.show()
+}
+
 fun Activity.showCreateAccountPopup(listener: PopUpInterface) {
     val data = DialogData(
         getString(R.string.create_account),
@@ -137,5 +174,6 @@ interface PopUpInterface {
     fun onNegative() {}
     fun onNeutral() {}
     fun onResult(success: Boolean) {}
+    fun onResult(balance: Int) {}
     fun onCreateAccount(name: String, number: String, balance: Double) {}
 }

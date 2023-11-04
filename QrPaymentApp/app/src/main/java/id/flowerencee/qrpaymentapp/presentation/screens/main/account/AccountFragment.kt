@@ -16,6 +16,7 @@ import id.flowerencee.qrpaymentapp.presentation.shared.custom.AccountView
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.PopUpInterface
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.showChallengePopup
 import id.flowerencee.qrpaymentapp.presentation.shared.custom.showCreateAccountPopup
+import id.flowerencee.qrpaymentapp.presentation.shared.custom.showTopUpBalancePopup
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AccountFragment : Fragment() {
@@ -66,7 +67,7 @@ class AccountFragment : Fragment() {
             }
             Toast.makeText(
                 requireContext(),
-                "${getString(R.string.create_account)} $message",
+                "Action $message",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -75,9 +76,17 @@ class AccountFragment : Fragment() {
     private fun initUi() {
         val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val listener = object : AccountView.AccountListener {
-            override fun onClick(account: UserAccount?) {
-                with((activity as MainActivity)) {
-                    activityLauncher.launch(HistoryActivity.myIntent(this, account?.id))
+            override fun onClick(account: UserAccount?, type: Int) {
+                super.onClick(account, type)
+                when(type){
+                    0 -> {
+                        with((activity as MainActivity)) {
+                            activityLauncher.launch(HistoryActivity.myIntent(this, account?.id))
+                        }
+                    }
+                    1 -> {
+                        showPopupAddBalance(account)
+                    }
                 }
             }
         }
@@ -96,7 +105,9 @@ class AccountFragment : Fragment() {
                                 accountNumber = number,
                                 balance = balance
                             )
-                            challengePopup(account)
+                            challengePopup{
+                                viewModel.createAccount(account)
+                            }
                         }
 
                         false -> Toast.makeText(
@@ -111,11 +122,25 @@ class AccountFragment : Fragment() {
         }
     }
 
-    private fun challengePopup(account: UserAccount) {
+    private fun showPopupAddBalance(account: UserAccount?) {
+        val popupListener = object : PopUpInterface {
+            override fun onResult(balance: Int) {
+                super.onResult(balance)
+                challengePopup{
+                    account?.id?.let {
+                        viewModel.topUpAccount(it, balance.toDouble())
+                    }
+                }
+            }
+        }
+        requireActivity().showTopUpBalancePopup(popupListener)
+    }
+
+    private fun challengePopup(action : () -> Unit) {
         val popupListener = object : PopUpInterface {
             override fun onResult(success: Boolean) {
                 when (success) {
-                    true -> viewModel.createAccount(account)
+                    true -> action.invoke()
                     false -> Toast.makeText(
                         requireContext(),
                         "Challenge failed",

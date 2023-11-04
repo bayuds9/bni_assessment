@@ -29,7 +29,7 @@ open class BaseActivity : AppCompatActivity() {
             val title =
                 statusResponse.statusCode.toString() + " - " + statusResponse.error.toString()
             val data =
-                DialogData(title, statusResponse.message.toString(), getString(R.string.okay))
+                DialogData(title, statusResponse.message.toString(), getString(R.string.retry), getString(R.string.okay))
             showPopup(data, listener)
         }
     }

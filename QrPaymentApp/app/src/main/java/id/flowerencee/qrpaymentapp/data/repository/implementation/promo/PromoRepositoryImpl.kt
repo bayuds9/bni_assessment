@@ -1,6 +1,6 @@
 package id.flowerencee.qrpaymentapp.data.repository.implementation.promo
 
-import id.flowerencee.qrpaymentapp.data.model.response.failed.StatusResponse
+import id.flowerencee.qrpaymentapp.data.model.response.failed.StatusResponses
 import id.flowerencee.qrpaymentapp.data.model.response.promo.PromoItem
 import id.flowerencee.qrpaymentapp.data.repository.source.remote.promo.PromoDataSourceImpl
 import id.flowerencee.qrpaymentapp.domain.repository.promo.PromoRepository
@@ -13,7 +13,7 @@ class PromoRepositoryImpl(
         return source.getPromo()
     }
 
-    override suspend fun getStatusResponse(): Flow<StatusResponse> {
+    override suspend fun getStatusResponse(): Flow<StatusResponses> {
         return source.status
     }
 }

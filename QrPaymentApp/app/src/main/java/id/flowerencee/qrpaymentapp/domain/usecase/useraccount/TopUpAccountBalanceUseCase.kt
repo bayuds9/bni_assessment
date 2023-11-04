@@ -72,6 +72,7 @@ class TopUpAccountBalanceUseCase(
                     true -> {
                         try {
                             account.balance = account.balance?.plus(amount)
+                            userAccountRepository.updateUserAccount(account)
                             true
                         } catch (e: NullPointerException) {
                             e.printStackTrace()

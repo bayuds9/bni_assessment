@@ -36,6 +36,7 @@
     <string name="select_sof">Select Source of Fund</string>
     <string name="no_account">You have no account, please create account to continue</string>
     <string name="finish_challenge">Finish this challenge to continue</string>
+    <string name="top_up_balance">Top-Up Account Balance</string>
 
     <string name="sure">Sure</string>
     <string name="cancel">Cancel</string>
@@ -45,6 +46,7 @@
     <string name="open_setting">Open Setting</string>
     <string name="permission_required">Permission Required</string>
     <string name="okay">Okay</string>
+    <string name="retry">Retry</string>
     <string name="next">Next</string>
     <string name="close">Close</string>
     <string name="action_continue">Continue</string>

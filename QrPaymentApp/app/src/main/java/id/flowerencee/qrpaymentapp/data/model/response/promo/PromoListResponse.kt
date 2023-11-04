@@ -1,3 +1,5 @@
 package id.flowerencee.qrpaymentapp.data.model.response.promo
 
-class PromoListResponse : ArrayList<PromoItem>()
+data class PromoListResponse(
+    var list : List<PromoItem> = listOf()
+)

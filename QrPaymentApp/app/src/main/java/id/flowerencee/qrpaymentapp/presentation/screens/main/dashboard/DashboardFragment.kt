@@ -74,24 +74,35 @@ class DashboardFragment : Fragment() {
     }
 
     private fun requestPromo() {
-        viewModel.getAllPromo().observe(viewLifecycleOwner) {
-            DeLog.d(TAG, "response $it")
-            binding.viewPromo.setData(ArrayList(it))
+        viewModel.getAllPromo().observe(viewLifecycleOwner) { promo ->
+            DeLog.d(TAG, "response $promo")
+            promo?.let {
+                binding.viewPromo.setData(ArrayList(it))
+            }
         }
         viewModel.getStatus().observe(viewLifecycleOwner) {
             DeLog.d(TAG, "status response $it")
             if (it != null) {
                 binding.viewPromo.setData(arrayListOf())
             }
-            if (!it.success) showInvalidAction(it)
+            it.error?.let { err ->
+                DeLog.d(TAG, "status response $err")
+                val statusResponse = StatusResponse(err.name, err.message, err.status)
+                showInvalidAction(statusResponse)
+            }
         }
     }
 
     private fun showInvalidAction(statusResponse: StatusResponse?) {
         if (isAdded) {
+            DeLog.d(TAG, "show popup $statusResponse")
             val listener = object : PopUpInterface {
                 override fun onPositive() {
                     requestPromo()
+                }
+
+                override fun onNegative() {
+                    DeLog.d(TAG, "dismiss popup")
                 }
             }
             (activity as MainActivity).showStatusPopup(statusResponse ?: StatusResponse(), listener)

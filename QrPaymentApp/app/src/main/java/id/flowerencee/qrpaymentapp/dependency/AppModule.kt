@@ -5,6 +5,7 @@ import android.content.res.Resources
 import id.flowerencee.qrpaymentapp.data.database.QrPayDatabase
 import id.flowerencee.qrpaymentapp.data.database.dao.TransactionDao
 import id.flowerencee.qrpaymentapp.data.database.dao.UserAccountDao
+import id.flowerencee.qrpaymentapp.data.networking.BaseApiClient
 import id.flowerencee.qrpaymentapp.data.networking.KtorService
 import id.flowerencee.qrpaymentapp.data.repository.implementation.portfolio.PortfolioRepositoryImpl
 import id.flowerencee.qrpaymentapp.data.repository.implementation.promo.PromoRepositoryImpl
@@ -49,7 +50,12 @@ val apiModule = module {
         return KtorService.create(context)
     }
 
+    fun provideBaseApiClient(ktorService: KtorService): BaseApiClient {
+        return BaseApiClient(ktorService)
+    }
+
     single { provideApiService(androidApplication()) }
+    single { provideBaseApiClient(get()) }
 }
 
 val databaseModule = module {
@@ -79,8 +85,8 @@ val dataSourceModule = module {
         return TransactionDataSourceImpl(dao)
     }
 
-    fun providePromoDataSource(ktorService: KtorService): PromoDataSourceImpl {
-        return PromoDataSourceImpl(ktorService)
+    fun providePromoDataSource(baseApiClient: BaseApiClient): PromoDataSourceImpl {
+        return PromoDataSourceImpl(baseApiClient)
     }
 
     fun providePortfolioDataSource(resources: Resources): PortfolioDataSourceImpl {
@@ -200,7 +206,7 @@ val portfolioUseCaseModule = module {
 
 val viewModelModule = module {
     viewModel { DashboardViewModel(get(), get()) }
-    viewModel { AccountViewModel(get(), get()) }
+    viewModel { AccountViewModel(get(), get(), get()) }
     viewModel { ScannerViewModel() }
     viewModel { ChartViewModel(get()) }
     viewModel { InquiryViewModel(get(), get(), get()) }
