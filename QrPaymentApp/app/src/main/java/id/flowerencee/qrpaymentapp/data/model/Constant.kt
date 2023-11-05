@@ -23,4 +23,13 @@ object Constant {
             const val TYPE = "type"
         }
     }
+
+    interface DATA {
+        companion object {
+            const val QR_DATA = "qr_data"
+            const val TRANSACTION_ID = "transaction_id"
+            const val DIRECT = "direct"
+            const val PROMO_DATA = "promo_data"
+        }
+    }
 }

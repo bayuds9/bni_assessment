@@ -40,6 +40,12 @@ import id.flowerencee.qrpaymentapp.presentation.screens.main.scanner.ScannerView
 import id.flowerencee.qrpaymentapp.presentation.screens.promo.PromoViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.inquiry.InquiryViewModel
 import id.flowerencee.qrpaymentapp.presentation.screens.transaction.receipt.ReceiptViewModel
+import id.flowerencee.qrpaymentapp.presentation.ui.screen.chart.ChartsViewModel
+import id.flowerencee.qrpaymentapp.presentation.ui.screen.detail.DetailViewModel
+import id.flowerencee.qrpaymentapp.presentation.ui.screen.history.HistoriesViewModel
+import id.flowerencee.qrpaymentapp.presentation.ui.screen.promo.PromosViewModel
+import id.flowerencee.qrpaymentapp.presentation.ui.screen.promo.promodetail.PromoDetailViewModel
+import id.flowerencee.qrpaymentapp.presentation.ui.screen.transaction.TransactionViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -210,6 +216,12 @@ val viewModelModule = module {
     viewModel { ScannerViewModel() }
     viewModel { ChartViewModel(get()) }
     viewModel { InquiryViewModel(get(), get(), get()) }
+    viewModel { TransactionViewModel(get(), get(), get()) }
+    viewModel { HistoriesViewModel(get(), get(), get()) }
+    viewModel { PromosViewModel(get()) }
+    viewModel { PromoDetailViewModel() }
+    viewModel { DetailViewModel(get(), get()) }
+    viewModel { ChartsViewModel(get()) }
     viewModel { ReceiptViewModel(get(), get()) }
     viewModel { HistoryViewModel(get(), get()) }
     viewModel { PromoViewModel() }

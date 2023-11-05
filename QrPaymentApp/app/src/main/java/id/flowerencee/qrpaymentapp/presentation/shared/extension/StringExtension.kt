@@ -73,3 +73,7 @@ fun String?.roundToFloat(): Float {
         0f
     }
 }
+
+fun String.isQrValid(): Boolean {
+    return this.split(".").size == 4
+}

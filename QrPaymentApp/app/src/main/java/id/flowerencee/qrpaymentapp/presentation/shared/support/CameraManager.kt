@@ -1,7 +1,6 @@
 package id.flowerencee.qrpaymentapp.presentation.shared.support
 
 import android.content.Context
-import android.util.Log
 import android.view.Surface
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
@@ -14,7 +13,6 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.google.mlkit.vision.barcode.common.Barcode
-import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -37,8 +35,6 @@ class CameraManager(
 
     private var imageAnalyzer: ImageAnalysis? = null
     private var imageCapture: ImageCapture? = null
-
-    private var file = 1
 
     init {
         cameraSelectorOption = CameraSelector.LENS_FACING_BACK
@@ -102,7 +98,7 @@ class CameraManager(
             )
             isFlashAvailable = camera?.cameraInfo?.hasFlashUnit() ?: false
         } catch (e: Exception) {
-            Log.e(TAG, "Use case binding failed", e)
+            DeLog.e(TAG, "Use case binding failed $e")
         }
     }
 
@@ -118,13 +114,6 @@ class CameraManager(
     }
 
     fun isFlashOn(): Boolean = flashOn
-
-    fun isFlashAvailable(): Boolean = isFlashAvailable
-
-    private fun createFile(baseFolder: File, format: String, extension: String) =
-        File(
-            baseFolder, "$format-${file++}" + extension
-        )
 
     companion object {
         private val TAG = CameraManager::class.java.simpleName
